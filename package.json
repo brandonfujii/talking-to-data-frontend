@@ -1,0 +1,42 @@
+{
+  "name": "ttd",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": "8.9.4"
+  },
+  "dependencies": {
+    "es6-promise": "4.2.4",
+    "history": "4.7.2",
+    "isomorphic-fetch": "2.2.1",
+    "prop-types": "15.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "5.0.6",
+    "react-router-redux": "5.0.0-alpha.9",
+    "react-scripts": "1.1.1",
+    "redux": "3.7.2",
+    "redux-persist": "5.8.0",
+    "redux-thunk": "2.2.0"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,json,css}": [
+      "prettier --single-quote --write",
+      "git add"
+    ]
+  },
+  "scripts": {
+    "pretty": "./node_modules/.bin/prettier --single-quote --write \"src/**/*.{js,jsx,json,css}\"",
+    "precommit": "lint-staged",
+    "start": "NODE_SRC=\"src/\" react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "husky": "0.14.3",
+    "lint-staged": "6.1.0",
+    "parallelshell": "3.0.2",
+    "prettier": "1.10.2"
+  }
+}
