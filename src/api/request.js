@@ -1,3 +1,5 @@
+// @flow
+
 /* Pupper is a wrapper class for isomorphic fetch */
 
 import FormData from 'form-data';
@@ -17,7 +19,7 @@ const appendQueryParams = (path, queryParams) => {
   return `${path}${joinedBy}${paramStr}`;
 };
 
-const getUrl = (path, queryParams) => {
+const getUrl = (path: String, queryParams: object) => {
   return queryParams ? appendQueryParams(path, queryParams) : path;
 };
 

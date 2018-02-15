@@ -13,6 +13,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "5.0.6",
+    "react-render-html": "0.6.0",
     "react-router-redux": "5.0.0-alpha.9",
     "react-scripts": "1.1.1",
     "redux": "3.7.2",
@@ -26,6 +27,7 @@
     ]
   },
   "scripts": {
+    "flow": "NODE_SRC=\"src/\" flow",
     "pretty": "./node_modules/.bin/prettier --single-quote --write \"src/**/*.{js,jsx,json,css}\"",
     "precommit": "lint-staged",
     "start": "NODE_SRC=\"src/\" react-scripts start",
@@ -34,6 +36,7 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "flow-bin": "latest",
     "husky": "0.14.3",
     "lint-staged": "6.1.0",
     "parallelshell": "3.0.2",
