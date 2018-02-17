@@ -1,3 +1,11 @@
-span.highlight {
-  background: red;
+span.highlight.type-0 {
+  background: orange;
+}
+
+span.highlight.type-1 {
+  background: blue;
+}
+
+span.highlight.type-2 {
+  background: green;
 }
