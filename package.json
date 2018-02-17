@@ -27,10 +27,10 @@
     ]
   },
   "scripts": {
-    "flow": "NODE_SRC=\"src/\" flow",
+    "flow": "flow",
     "pretty": "./node_modules/.bin/prettier --single-quote --write \"src/**/*.{js,jsx,json,css}\"",
     "precommit": "lint-staged",
-    "start": "NODE_SRC=\"src/\" react-scripts start",
+    "start": "bash bin/init.sh",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
