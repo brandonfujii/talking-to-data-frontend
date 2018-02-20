@@ -11,6 +11,7 @@ class TextField extends Component {
 
   handleSelectionEvent(e) {
     // Implement this
+    console.log('logged');
   }
 
   renderTextHtml(text, claims) {
@@ -28,8 +29,8 @@ class TextField extends Component {
 
       const openTag = `<span id=${claim.id} className="highlight type-${
         claim.type_id
-      }">`;
-      const closingTag = '</span>';
+      }" onClick={this.handleSelectionEvent}>`;
+      const closingTag = `</span>`;
       claimText = `${openTag}${claimText}${closingTag}`;
       htmlString = `${beforeText}${claimText}${afterText}`;
       numShift += openTag.length + closingTag.length;

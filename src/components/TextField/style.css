@@ -9,3 +9,12 @@ span.highlight.type-1 {
 span.highlight.type-2 {
   background: green;
 }
+/**
+#hoverBox{
+	display:none;
+	background:yellow;
+}
+span:hover + #hoverBox{
+	display:block;
+	font-weight:bold;
+}**/
