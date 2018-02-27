@@ -15,6 +15,10 @@ class PopUp extends Component {
     return (
       <span className="tooltiptext">
         <button onClick={() => this.addType(0)}> Add Source </button>
+        <div>
+          <input type="text" placeholder="Source Name" name="name" />
+          <input type="text" placeholder="Source Link" name="link" />
+        </div>
         <button onClick={() => this.addType(1)}> Remove </button>
       </span>
     );
