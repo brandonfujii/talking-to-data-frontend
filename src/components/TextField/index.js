@@ -72,12 +72,12 @@ class TextField extends Component {
   };
   //what to do when event is selected
   handleSelectionEvent = () => {
-    /**
-      this.setState(prevState => ({
-        selected: !prevState.selected
-      }));
-      **/
-    var txt = '';
+    this.setState(prevState => ({
+      selected: !prevState.selected
+    }));
+
+    let txt = '';
+
     if (window.getSelection) {
       txt = window.getSelection();
     } else if (document.getSelection) {
@@ -85,8 +85,19 @@ class TextField extends Component {
     } else if (document.selection) {
       txt = document.selection.createRange().text;
     }
+
     if (txt != '') {
-      alert('Selected text is: ' + txt);
+      let startRange = this.props.article.indexOf(txt);
+      let endRange = startRange + txt.length;
+      console.log(txt.length);
+      alert(
+        'Selected text is: ' +
+          txt +
+          '\nStart index: ' +
+          startRange +
+          '\nEnd index: ' +
+          endRange
+      );
     }
   };
 
@@ -96,7 +107,6 @@ class TextField extends Component {
         {this.props.claims && this.props.article
           ? this.renderTextJSX(this.props.article, this.props.claims)
           : null}
-        <SelectPopUp />
       </div>
     );
   }
