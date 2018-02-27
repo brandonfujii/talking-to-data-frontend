@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TextField from '../TextField';
 import Filter from '../Filter';
+import PopUp from '../PopUp';
 
 const TYPES = {
   0: 'proper_noun',
@@ -49,7 +50,7 @@ class Document extends Component {
           text:
             '"The Schumer-Rounds-Collins proposal destroys the ability of the men and women from the Department of Homeland Security (DHS) to remove millions of illegal aliens,"',
           start_index: 1383,
-          end_index: 1546,
+          end_index: 1547,
           type_id: 2,
           source_id: null,
           source_name: null,

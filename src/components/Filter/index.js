@@ -11,7 +11,7 @@ class Filter extends Component {
   }
 
   render() {
-    return <div>Hello fucking world</div>;
+    return <div>Hello</div>;
   }
 }
 

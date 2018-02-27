@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import style from './style.css';
 
-class PopUp extends Component {
+class SelectPopUp extends Component {
   constructor(props) {
     super(props);
   }
@@ -13,7 +13,8 @@ class PopUp extends Component {
 
   render() {
     return (
-      <span className="tooltiptext">
+      <span className="popup-txt">
+        STILL WORKING ON THIS
         <button onClick={() => this.addType(0)}> Add Source </button>
         <button onClick={() => this.addType(1)}> Remove </button>
       </span>
@@ -21,10 +22,10 @@ class PopUp extends Component {
   }
 }
 /**
-PopUp.propTypes = {
+SelectPopUp.propTypes = {
   article: PropTypes.string.isRequired,
   claims: PropTypes.array.isRequired
 };
 **/
 
-export default PopUp;
+export default SelectPopUp;

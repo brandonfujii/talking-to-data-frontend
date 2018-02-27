@@ -1,0 +1,14 @@
+button {
+  cursor: pointer;
+  display: block;
+}
+span.highlight .tooltiptext {
+  visibility: hidden;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 2;
+}
+
+span.highlight:hover .tooltiptext {
+  visibility: visible;
+}
