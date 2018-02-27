@@ -4,21 +4,24 @@ import PropTypes from 'prop-types';
 class Filter extends Component {
   constructor(props) {
     super(props);
-  }
-
-  handleFilterByProperNoun() {
-    this.props.filterByProperNoun();
+    this.state = {};
   }
 
   render() {
-    return <div>Hello fucking world</div>;
+    return (
+      <button className="filter" onClick={() => this.props.onClick()}>
+        {this.props.name}
+      </button>
+    );
   }
 }
 
+/*
 Filter.propTypes = {
   article: PropTypes.string.isRequired,
   claims: PropTypes.array.isRequired,
-  filterByProperNoun: PropTypes.func.isRequired
+  filterByClaimType: PropTypes.func.isRequired
 };
+*/
 
 export default Filter;

@@ -58,17 +58,44 @@ class Document extends Component {
           date_updated: new Date(),
           date_verified: null
         }
-      ]
+      ],
+      filter: -1
     };
   }
 
-  filterByProperNoun() {}
+  handleFilter(claim_type) {
+    this.setState({
+      article: this.state.article,
+      claims: this.state.claims,
+      filter: claim_type
+    });
+  }
+
+  createFilterButton(claim_type, type_id) {
+    return (
+      <Filter
+        name={claim_type}
+        type={type_id}
+        onClick={() => this.handleFilter(type_id)}
+      />
+    );
+  }
 
   render() {
     return (
       <div>
-        <Filter article={this.state.article} claims={this.state.claims} />
-        <TextField article={this.state.article} claims={this.state.claims} />
+        <div className="filter-buttons">
+          {this.createFilterButton('Proper Nouns', 0)}
+          {this.createFilterButton('Numbers', 3)}
+          {this.createFilterButton('Quotes', 2)}
+          {this.createFilterButton('Other', 4)}
+          {this.createFilterButton('All', -1)}
+        </div>
+        <TextField
+          article={this.state.article}
+          claims={this.state.claims}
+          filter={this.state.filter}
+        />
       </div>
     );
   }
