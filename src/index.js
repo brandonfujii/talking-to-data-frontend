@@ -1,12 +1,10 @@
-// @flow
-
 import React from 'react';
 import { render } from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 
 import store from './store';
 import AppProvider from './AppProvider';
-import App from './App';
+import App from './containers/App';
 
 const $renderEntryPoint = document.getElementById('root');
 

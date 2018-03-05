@@ -1,8 +1,4 @@
-// @flow
-
 /* Pupper is a wrapper class for isomorphic fetch */
-
-import FormData from 'form-data';
 import config from 'config';
 
 require('es6-promise').polyfill();
@@ -19,7 +15,7 @@ const appendQueryParams = (path, queryParams) => {
   return `${path}${joinedBy}${paramStr}`;
 };
 
-const getUrl = (path: String, queryParams: object) => {
+const getUrl = (path, queryParams) => {
   return queryParams ? appendQueryParams(path, queryParams) : path;
 };
 
@@ -38,27 +34,16 @@ const handleError = err => {
 };
 
 class Pupper {
-  constructor(hostname) {
-    this.hostname = hostname || config.HOSTNAME;
+  constructor(serverAddress) {
+    this.serverAddress = serverAddress || config.SERVER_ADDR;
     this.defaultHeaders = {
       Accept: 'application/json',
       'Content-Type': 'application/json'
     };
   }
 
-  sign(options = {}, token) {
-    if (!token) return options;
-
-    const headers = Object.assign(options.headers || {}, {
-      'X-Access-Token': `Bearer ${token}`
-    });
-
-    options.headers = headers;
-    return options;
-  }
-
   request(method, route, options = {}) {
-    const path = `${this.hostname}${route}`;
+    const path = `${this.serverAddress}${route}`;
     const headers = {
       ...this.defaultHeaders,
       ...options.headers
@@ -80,6 +65,7 @@ class Pupper {
   }
 
   post(route, options = {}) {
+    console.log('POST at', route);
     return this.request('POST', route, options)
       .then(handleResponse)
       .catch(handleError);

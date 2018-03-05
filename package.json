@@ -30,7 +30,7 @@
     "flow": "flow",
     "pretty": "./node_modules/.bin/prettier --single-quote --write \"src/**/*.{js,jsx,json,css}\"",
     "precommit": "lint-staged",
-    "start": "react-scripts start",
+    "start": "NODE_PATH='src/' react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
