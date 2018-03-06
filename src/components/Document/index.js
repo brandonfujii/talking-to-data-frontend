@@ -63,8 +63,6 @@ class Document extends Component {
     };
   }
 
-  filterByProperNoun() {}
-
   render() {
     return (
       <div>
