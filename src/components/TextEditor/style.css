@@ -1,0 +1,16 @@
+div.editor-div {
+  border: solid;
+  border-color: black;
+  overflow-y: scroll;
+  max-height: 500px;
+  height: 500px;
+  padding: 5px;
+}
+.controlPanel {
+  border: solid;
+  border-color: black;
+  overflow-y: scroll;
+  max-height: 150px;
+  height: 150px;
+  padding: 5px;
+}

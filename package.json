@@ -6,6 +6,7 @@
     "node": "8.9.4"
   },
   "dependencies": {
+    "draft-js": "^0.10.5",
     "es6-promise": "4.2.4",
     "history": "4.7.2",
     "isomorphic-fetch": "2.2.1",

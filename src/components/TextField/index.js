@@ -23,7 +23,7 @@ class TextField extends Component {
     let everything = [];
 
     if (claims.length == 0) {
-      everything.push(this.createTextSpan(text));
+      everything.push(this.createTextSpan(text, 'text'));
     } else {
       // for the first claim we want to append the before text and the first claim
       let claim1 = claims[0];
@@ -87,18 +87,24 @@ class TextField extends Component {
     }
 
     if (txt != '') {
-      let startRange = this.props.article.indexOf(txt);
-      let endRange = startRange + txt.length;
-      console.log(txt.length);
-      alert(
-        'Selected text is: ' +
-          txt +
-          '\nStart index: ' +
-          startRange +
-          '\nEnd index: ' +
-          endRange
+      //let startRange = this.props.article.indexOf(txt);
+      //let endRange = startRange + txt.length;
+      let claimed = window.confirm(
+        'Do you want to add the following selection as a claim?\n\n' + txt
       );
+      if (claimed == true) {
+        this.addClaim();
+      } else {
+        console.log('Pressed cancel!');
+      }
     }
+    this.setState(this.state);
+    this.setState(prevState => prevState);
+    this.props.claims.push['cats'];
+  };
+
+  addClaim = () => {
+    console.log('Pressed Ok');
   };
 
   render() {
