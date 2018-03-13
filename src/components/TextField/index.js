@@ -23,7 +23,7 @@ class TextField extends Component {
     let everything = [];
 
     if (claims.length == 0) {
-      everything.push(this.createTextSpan(text));
+      everything.push(this.createTextSpan(text, 'text'));
     } else {
       // for the first claim we want to append the before text and the first claim
       let claim1 = claims[0];
@@ -72,12 +72,12 @@ class TextField extends Component {
   };
   //what to do when event is selected
   handleSelectionEvent = () => {
-    /**
-      this.setState(prevState => ({
-        selected: !prevState.selected
-      }));
-      **/
-    var txt = '';
+    this.setState(prevState => ({
+      selected: !prevState.selected
+    }));
+
+    let txt = '';
+
     if (window.getSelection) {
       txt = window.getSelection();
     } else if (document.getSelection) {
@@ -85,9 +85,26 @@ class TextField extends Component {
     } else if (document.selection) {
       txt = document.selection.createRange().text;
     }
+
     if (txt != '') {
-      alert('Selected text is: ' + txt);
+      //let startRange = this.props.article.indexOf(txt);
+      //let endRange = startRange + txt.length;
+      let claimed = window.confirm(
+        'Do you want to add the following selection as a claim?\n\n' + txt
+      );
+      if (claimed == true) {
+        this.addClaim();
+      } else {
+        console.log('Pressed cancel!');
+      }
     }
+    this.setState(this.state);
+    this.setState(prevState => prevState);
+    this.props.claims.push['cats'];
+  };
+
+  addClaim = () => {
+    console.log('Pressed Ok');
   };
 
   render() {
@@ -96,7 +113,6 @@ class TextField extends Component {
         {this.props.claims && this.props.article
           ? this.renderTextJSX(this.props.article, this.props.claims)
           : null}
-        <SelectPopUp />
       </div>
     );
   }

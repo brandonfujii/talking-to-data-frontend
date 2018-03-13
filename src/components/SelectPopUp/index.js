@@ -14,9 +14,9 @@ class SelectPopUp extends Component {
   render() {
     return (
       <span className="popup-txt">
-        STILL WORKING ON THIS
-        <button onClick={() => this.addType(0)}> Add Source </button>
-        <button onClick={() => this.addType(1)}> Remove </button>
+        <button onClick={() => this.addType(0)}> Number </button>
+        <button onClick={() => this.addType(1)}> Quote </button>
+        <button onClick={() => this.addType(1)}> Star </button>
       </span>
     );
   }

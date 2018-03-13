@@ -1,6 +1,5 @@
 button {
   cursor: pointer;
-  display: block;
 }
 span.highlight .tooltiptext {
   visibility: hidden;
