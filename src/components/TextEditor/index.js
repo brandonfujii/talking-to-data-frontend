@@ -13,7 +13,6 @@ import {
 import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
 import PropTypes from 'prop-types';
 import style from './style.css';
-import MediaComponent from '../MediaComponent';
 import PopUp from '../PopUp';
 import ReactDOMServer from 'react-dom/server';
 
