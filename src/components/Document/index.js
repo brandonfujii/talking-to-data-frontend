@@ -57,18 +57,28 @@ class Document extends Component {
           date_updated: new Date(),
           date_verified: null
         }
-      ]
+      ],
+      filter: -1
     };
+  }
+
+  updateArticle(text) {}
+
+  addClaim(claimObject) {
+    this.setState({
+      claims: [...this.state.claims, claimObject]
+    });
   }
 
   render() {
     return (
       <div>
-        {/*}
-        <Filter article={this.state.article} claims={this.state.claims} />
-        <TextField article={this.state.article} claims={this.state.claims} />
-        */}
-        <TextEditor article={this.state.article} claims={this.state.claims} />
+        <TextEditor
+          article={this.state.article}
+          claims={this.state.claims}
+          addClaim={this.addClaim.bind(this)}
+          updateArticle={this.updateArticle.bind(this)}
+        />
       </div>
     );
   }

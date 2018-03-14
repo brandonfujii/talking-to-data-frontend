@@ -8,7 +8,8 @@ import {
   convertToRaw,
   convertFromRaw,
   convertFromHTML,
-  Modifier
+  Modifier,
+  getDefaultKeyBinding
 } from 'draft-js';
 import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
 import PropTypes from 'prop-types';
@@ -30,21 +31,30 @@ const styleMap = {
 class TextEditor extends React.Component {
   constructor(props) {
     super(props);
+    let editorState = this.loadArticleIntoEditor(
+      this.props.article,
+      this.props.claims
+    );
+
+    this.state = {
+      editorState: editorState
+    };
+  }
+
+  loadArticleIntoEditor = (article, claims) => {
     let editorState;
-    let editorSelection;
-    //puts the article inside the editor
-    if (this.props.article.trim() != '') {
-      var rawJsText = this.textToJSON(this.props.article, this.props.claims);
+    if (article.trim() != '') {
+      var rawJsText = this.textToJSON(article, claims);
       const content = convertFromRaw(JSON.parse(rawJsText));
       editorState = EditorState.createWithContent(content);
       editorState = EditorState.moveFocusToEnd(editorState);
     } else {
       editorState = EditorState.createEmpty();
     }
-    this.state = {
-      editorState: editorState
-    };
-  }
+
+    return editorState;
+  };
+
   //put highlight styling onto claims
   textToJSON = (text, claims) => {
     // need escape characters for quotes
@@ -83,6 +93,20 @@ class TextEditor extends React.Component {
     return rawJSONText;
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.claims &&
+      nextProps.claims.length != this.props.claims.length
+    ) {
+      this.setState({
+        editorState: this.loadArticleIntoEditor(
+          nextProps.article,
+          nextProps.claims
+        )
+      });
+    }
+  }
+
   /*
   command argument supplied to handleKeyCommand is a string of name of command to be edited
   */
@@ -94,6 +118,18 @@ class TextEditor extends React.Component {
       return 'handled';
     }
     return 'not-handled';
+  };
+
+  handleKeyDown = () => {
+    this.props.updateArticle();
+  };
+
+  keyBindingFn = e => {
+    if (e.type == 'keydown') {
+      console.log(e);
+      this.handleKeyDown();
+    }
+    return getDefaultKeyBinding(e);
   };
 
   saveContent = content => {
@@ -152,6 +188,7 @@ class TextEditor extends React.Component {
       })
       .join(blockDelimiter);
   };
+
   isSelection = editorState => {
     const selection = editorState.getSelection();
     const start = selection.getStartOffset();
@@ -180,50 +217,44 @@ class TextEditor extends React.Component {
   _onBoldClick = () => {
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
   };
+
+  _addClaim = (selection, type) => {
+    const start_index = selection.getStartOffset();
+    const end_index = selection.getEndOffset();
+    const text = this.state.editorSelection;
+    const id = Math.random();
+    let claim = {
+      id: id.toString(),
+      raw_text_id: Math.random(),
+      text,
+      start_index,
+      end_index,
+      type_id: type,
+      source_id: null,
+      source_name: null,
+      source_description: null,
+      date_created: new Date(),
+      date_updated: new Date(),
+      date_verified: null
+    };
+
+    this.props.addClaim(claim);
+  };
+
   _onHighlight0 = () => {
-    this.onChange(
-      RichUtils.toggleInlineStyle(this.state.editorState, 'HIGHLIGHT0')
-    );
+    const selection = this.state.editorState.getSelection();
+    this._addClaim(selection, 0);
   };
 
   _onHighlight1 = () => {
-    this.onChange(
-      RichUtils.toggleInlineStyle(this.state.editorState, 'HIGHLIGHT1')
-    );
+    const selection = this.state.editorState.getSelection();
+    this._addClaim(selection, 1);
   };
 
   _onHighlight2 = () => {
-    this.onChange(
-      RichUtils.toggleInlineStyle(this.state.editorState, 'HIGHLIGHT2')
-    );
+    const selection = this.state.editorState.getSelection();
+    this._addClaim(selection, 2);
   };
-  /**
-  clearInlineStyles = (editorState) => {
-    const styles = [
-      'BOLD',
-      'ITALIC',
-      'UNDERLINE',
-      'STRIKETHROUGH',
-      'CODE',
-      'HIGHLIGHT0',
-      'HIGHLIGHT1'
-    ];
-
-    const contentWithoutStyles = _.reduce(styles, (newContentState, style) => (
-      Modifier.removeInlineStyle(
-        newContentState,
-        editorState.getSelection(),
-        style
-      )
-    ), editorState.getCurrentContent());
-
-    return EditorState.push(
-      editorState,
-      contentWithoutStyles,
-      'change-inline-style'
-    );
-  };
-**/
 
   render() {
     return (
@@ -231,20 +262,16 @@ class TextEditor extends React.Component {
         <button onClick={this._onHighlight0}> Highlight Proper Noun </button>
         <button onClick={this._onHighlight1}> Highlight Number </button>
         <button onClick={this._onHighlight2}> Highlight Quote </button>
-        {/*
-        <button onClick ={this.clearInlineStyles}> Remove Styling </button>
-        */}
-        <div className="editor-div">
+        <div className="editor-div column">
           <Editor
             customStyleMap={styleMap}
             editorState={this.state.editorState}
             handleKeyCommand={this.handleKeyCommand}
             onChange={this.onChange}
-            onMouseDown={this.onChange}
+            keyBindingFn={this.keyBindingFn}
           />
         </div>
-        <div className="controlPanel">
-          {/** control panel div **/}
+        <div className="controlPanel column">
           Text Selection: <br />
           {this.state.editorSelection}
         </div>
@@ -255,8 +282,9 @@ class TextEditor extends React.Component {
 
 TextEditor.propTypes = {
   article: PropTypes.string.isRequired,
-  claims: PropTypes.array.isRequired
+  claims: PropTypes.array.isRequired,
+  addClaim: PropTypes.func.isRequired,
+  updateArticle: PropTypes.func.isRequired
 };
-// https://github.com/facebook/draft-js/blob/master/examples/draft-0-10-0/color/color.html
 
 export default TextEditor;
