@@ -304,12 +304,12 @@ class TextEditor extends React.Component {
               <div> {this.state.claimSelectionText} </div>
             </div>
           ) : null}
+          {this.state.clickInRange ? (
+            <div>
+              <button className="sourceButton"> Add Source </button>
+            </div>
+          ) : null}
         </div>
-        {this.state.clickInRange ? (
-          <div>
-            <button className="sourceButton"> Add Source </button>
-          </div>
-        ) : null}
       </div>
     );
   }
