@@ -10,7 +10,7 @@ import {
 import PropTypes from 'prop-types';
 import style from './style.css';
 
-const highlights = ['pronoun', 'number', 'quote', 'date'];
+const highlights = ['pronoun', 'number', 'quote', 'date', 'general'];
 
 const styleMap = {
   HIGHLIGHT0: {
@@ -24,6 +24,9 @@ const styleMap = {
   },
   HIGHLIGHT3: {
     backgroundColor: 'violet'
+  },
+  HIGHLIGHT4: {
+    backgroundColor: 'tan'
   }
 };
 
@@ -117,6 +120,9 @@ class TextEditor extends React.Component {
       } else if (claims[i].type_id == 3) {
         rawJSONText = rawJSONText.concat(`"HIGHLIGHT3"}`);
         claimKey = claimKey.concat('-HIGHLIGHT3');
+      } else if (claims[i].type_id == 4) {
+        rawJSONText = rawJSONText.concat(`"HIGHLIGHT4"}`);
+        claimKey = claimKey.concat('-HIGHLIGHT4');
       }
       if (i != claims.length - 1) {
         //not at the last claim
@@ -285,7 +291,7 @@ class TextEditor extends React.Component {
           let fullArticle = currBlock['text'];
           claimText = fullArticle.substring(startBound, endBound);
 
-          //look up the claim we are clicking on dictionary
+          //look up the claim we are clicking on in dictionary
           //{offset}-{length}-{style}
           let claimIdKey =
             startBound +
@@ -365,6 +371,14 @@ class TextEditor extends React.Component {
     }
     const selection = this.state.editorState.getSelection();
     this._addClaim(selection, 3);
+  };
+
+  _onHighlight4 = () => {
+    if (!this.isSelection(this.state.editorState)) {
+      return;
+    }
+    const selection = this.state.editorState.getSelection();
+    this._addClaim(selection, 4);
   };
 
   //toggle between showing add source input and not showing
@@ -479,6 +493,14 @@ class TextEditor extends React.Component {
         <header className="top-header">
           {this.state.showHighlightOptions ? (
             <div>
+              <button
+                type="button"
+                className="highlight-btn btn btn-outline-primary"
+                id="general"
+                onClick={this._onHighlight4}
+              >
+                General
+              </button>
               <button
                 type="button"
                 className="highlight-btn btn btn-outline-primary"
