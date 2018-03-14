@@ -16,7 +16,7 @@ import PropTypes from 'prop-types';
 import style from './style.css';
 import ReactDOMServer from 'react-dom/server';
 
-const highlights = ['pronoun', 'number', 'quote'];
+const highlights = ['pronoun', 'number', 'quote', 'date'];
 
 const styleMap = {
   HIGHLIGHT0: {
@@ -27,6 +27,9 @@ const styleMap = {
   },
   HIGHLIGHT2: {
     backgroundColor: 'lightgreen'
+  },
+  HIGHLIGHT3: {
+    backgroundColor: 'violet'
   }
 };
 
@@ -90,7 +93,7 @@ class TextEditor extends React.Component {
     rawJSONText = rawJSONText.concat(`",
           "inlineStyleRanges": [`);
     /** **/
-    console.log(self.state);
+    //console.log(self.state);
     var ids = self.state.claimIds;
     //var ids = {};
     for (let i = 0; i < claims.length; i++) {
@@ -117,6 +120,9 @@ class TextEditor extends React.Component {
       } else if (claims[i].type_id == 2) {
         rawJSONText = rawJSONText.concat(`"HIGHLIGHT2"}`);
         claimKey = claimKey.concat('-HIGHLIGHT2');
+      } else if (claims[i].type_id == 3) {
+        rawJSONText = rawJSONText.concat(`"HIGHLIGHT3"}`);
+        claimKey = claimKey.concat('-HIGHLIGHT3');
       }
       if (i != claims.length - 1) {
         //not at the last claim
@@ -125,9 +131,9 @@ class TextEditor extends React.Component {
       ids[claimKey] = claims[i].id;
     }
     rawJSONText = rawJSONText.concat(`]}]}`);
-    console.log(ids);
-    this.setState({ claimIds: ids }, () => console.log(this.state.claimIds));
-
+    //console.log(ids);
+    //this.setState({ claimIds: ids }, () => console.log(this.state.claimIds));
+    this.setState({ claimIds: ids });
     return rawJSONText;
   };
 
@@ -255,7 +261,15 @@ class TextEditor extends React.Component {
       ),
       claimSelectionId: null
     });
-
+    /**
+    //test stuff
+    console.log("Start Index: ",this.state.editorState
+      .getSelection()
+      .getStartOffset());
+    console.log("End Index: ",this.state.editorState
+      .getSelection()
+      .getEndOffset());
+    **/
     if (!this.isSelection(editorState)) {
       let contentMap = convertToRaw(this.state.editorState.getCurrentContent());
       let clickLocation = this.state.editorState
@@ -285,14 +299,11 @@ class TextEditor extends React.Component {
             styleRanges[i].length +
             '-' +
             styleRanges[i].style;
-          try {
-            let claimId = this.state.claimIds[claimIdKey];
-            this.setState({
-              claimSelectionId: claimId
-            });
-          } catch (err) {
-            continue; //do something here?
-          }
+
+          let claimId = this.state.claimIds[claimIdKey];
+          this.setState({
+            claimSelectionId: claimId
+          });
           break; //assumption: no claim overlap
         }
       }
@@ -354,6 +365,14 @@ class TextEditor extends React.Component {
     this._addClaim(selection, 2);
   };
 
+  _onHighlight3 = () => {
+    if (!this.isSelection(this.state.editorState)) {
+      return;
+    }
+    const selection = this.state.editorState.getSelection();
+    this._addClaim(selection, 3);
+  };
+
   //toggle between showing add source input and not showing
   requestAddSource = () => {
     this.setState({
@@ -365,6 +384,13 @@ class TextEditor extends React.Component {
     return this.props.claims.find(claim => {
       return claim.id == claimId;
     });
+  };
+
+  removeHighlightedClaim = claimId => {
+    let claim = this.findClaimById(claimId);
+
+    if (claim) {
+    }
   };
 
   handleAddSource = type => {
@@ -482,6 +508,14 @@ class TextEditor extends React.Component {
                 onClick={this._onHighlight2}
               >
                 Quote
+              </button>
+              <button
+                type="button"
+                className="highlight-btn btn btn-outline-primary"
+                id="date"
+                onClick={this._onHighlight3}
+              >
+                Date
               </button>
             </div>
           ) : null}
