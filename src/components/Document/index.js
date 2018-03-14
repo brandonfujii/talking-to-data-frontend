@@ -62,7 +62,32 @@ class Document extends Component {
     };
   }
 
-  updateArticle(text) {}
+  updateArticle(text, edit_start_index, offset = 1) {
+    let claims = this.state.claims.map((claim, i) => {
+      if (claim.end_index <= edit_start_index) {
+        return claim;
+      } else if (
+        claim.start_index <= edit_start_index &&
+        claim.end_index >= edit_start_index
+      ) {
+        return {
+          ...claim,
+          end_index: claim.end_index + offset
+        };
+      } else {
+        return {
+          ...claim,
+          start_index: claim.start_index + offset,
+          end_index: claim.end_index + offset
+        };
+      }
+    });
+
+    this.setState({
+      article: text,
+      claims
+    });
+  }
 
   addClaim(claimObject) {
     this.setState({

@@ -95,8 +95,10 @@ class TextEditor extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (
+      nextProps.article &&
       nextProps.claims &&
-      nextProps.claims.length != this.props.claims.length
+      (nextProps.claims.length != this.props.claims.length ||
+        nextProps.article.length != nextProps.article.length)
     ) {
       this.setState({
         editorState: this.loadArticleIntoEditor(
@@ -121,12 +123,16 @@ class TextEditor extends React.Component {
   };
 
   handleKeyDown = () => {
-    this.props.updateArticle();
+    let contentMap = convertToRaw(this.state.editorState.getCurrentContent());
+    let editStartIndex = this.state.editorState.getSelection().getStartOffset();
+    let _blocks = contentMap['blocks'];
+    let currBlock = _blocks[0];
+    let articleText = currBlock['text'];
+    this.props.updateArticle(articleText, editStartIndex);
   };
 
   keyBindingFn = e => {
     if (e.type == 'keydown') {
-      console.log(e);
       this.handleKeyDown();
     }
     return getDefaultKeyBinding(e);
@@ -202,44 +208,42 @@ class TextEditor extends React.Component {
     this.setState({
       editorState
     });
-    /**
-      if (!this.isSelection(editorState)) {
-        return;
-      } **/
+
     this.setState({
       editorSelection: this._getTextSelection(
         editorState.getCurrentContent(),
         editorState.getSelection()
       )
     });
-    let contentMap = convertToRaw(this.state.editorState.getCurrentContent());
-    let clickLocation = editorState.getSelection().getStartOffset();
-    let inRange = false;
-    let _blocks = contentMap['blocks'];
-    let currBlock = _blocks[0];
-    let styleRanges = currBlock['inlineStyleRanges'];
-    let claimText = '';
-    for (var i = 0; i < styleRanges.length; i++) {
-      let startBound = styleRanges[i].offset;
-      let endBound = styleRanges[i].length + startBound;
-      if ((clickLocation >= startBound) & (clickLocation <= endBound)) {
-        inRange = true;
-        // do something here to get the claim from offset and length
-        let fullArticle = currBlock['text'];
-        claimText = fullArticle.substring(startBound, endBound);
-        break;
-      }
-    }
-    this.setState({
-      clickInRange: inRange
-    });
-    this.setState({
-      claimSelectionText: claimText
-    });
-  };
 
-  _onBoldClick = () => {
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
+    if (!this.isSelection(editorState)) {
+      let contentMap = convertToRaw(this.state.editorState.getCurrentContent());
+      let clickLocation = this.state.editorState
+        .getSelection()
+        .getStartOffset();
+      let inRange = false;
+      let _blocks = contentMap['blocks'];
+      let currBlock = _blocks[0];
+      let styleRanges = currBlock['inlineStyleRanges'];
+      let claimText = '';
+
+      for (var i = 0; i < styleRanges.length; i++) {
+        let startBound = styleRanges[i].offset;
+        let endBound = styleRanges[i].length + startBound;
+
+        if ((clickLocation >= startBound) & (clickLocation <= endBound)) {
+          inRange = true;
+          // do something here to get the claim from offset and length
+          let fullArticle = currBlock['text'];
+          claimText = fullArticle.substring(startBound, endBound);
+          break;
+        }
+      }
+      this.setState({
+        clickInRange: inRange,
+        claimSelectionText: claimText
+      });
+    }
   };
 
   _addClaim = (selection, type) => {
