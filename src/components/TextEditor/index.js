@@ -25,6 +25,9 @@ const styleMap = {
   },
   HIGHLIGHT2: {
     backgroundColor: 'lightgreen'
+  },
+  HIGHLIGHT3: {
+    backgroundColor: 'violet'
   }
 };
 
@@ -107,6 +110,9 @@ class TextEditor extends React.Component {
       } else if (claims[i].type_id == 2) {
         rawJSONText = rawJSONText.concat(`"HIGHLIGHT2"}`);
         claimKey = claimKey.concat('-HIGHLIGHT2');
+      } else if (claims[i].type_id == 3) {
+        rawJSONText = rawJSONText.concat(`"HIGHLIGHT3"}`);
+        claimKey = claimKey.concat('-HIGHLIGHT3');
       }
       if (i != claims.length - 1) {
         //not at the last claim
@@ -347,6 +353,14 @@ class TextEditor extends React.Component {
     this._addClaim(selection, 2);
   };
 
+  _onHighlight3 = () => {
+    if (!this.isSelection(this.state.editorState)) {
+      return;
+    }
+    const selection = this.state.editorState.getSelection();
+    this._addClaim(selection, 3);
+  };
+
   //toggle between showing add source input and not showing
   requestAddSource = () => {
     if (this.state.addSourceRequested) {
@@ -399,6 +413,14 @@ class TextEditor extends React.Component {
                 onClick={this._onHighlight2}
               >
                 Quote
+              </button>
+              <button
+                type="button"
+                className="highlight-btn btn btn-outline-primary"
+                id="date"
+                onClick={this._onHighlight3}
+              >
+                Date
               </button>
             </div>
           ) : null}

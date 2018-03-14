@@ -55,6 +55,16 @@ button {
   color: #fff;
 }
 
+.highlight-btn#date {
+  border-color: violet;
+  color: violet;
+}
+
+.highlight-btn#date:hover {
+  background-color: violet;
+  color: #fff;
+}
+
 .clearfix::after {
   content: '';
   clear: both;
