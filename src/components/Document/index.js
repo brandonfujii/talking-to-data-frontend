@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import TextField from '../TextField';
 import Filter from '../Filter';
-import PopUp from '../PopUp';
 import TextEditor from '../TextEditor';
 
 const TYPES = {

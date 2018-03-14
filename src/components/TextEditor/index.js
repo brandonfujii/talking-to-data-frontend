@@ -13,7 +13,6 @@ import {
 import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
 import PropTypes from 'prop-types';
 import style from './style.css';
-import PopUp from '../PopUp';
 import ReactDOMServer from 'react-dom/server';
 
 const styleMap = {
@@ -225,75 +224,6 @@ class TextEditor extends React.Component {
     );
   };
 **/
-
-  //render text using jsx
-  renderTextHTML = (text, claims) => {
-    let htmlString = text;
-    let numShift = 0;
-    //let everything = [];
-    let everythingString = '';
-
-    if (claims.length == 0) {
-      //everything.push(this.createTextSpan(text,"text"));
-      everythingString += ReactDOMServer.renderToStaticMarkup(
-        this.createTextSpan(text, 'text')
-      );
-    } else {
-      // for the first claim we want to append the before text and the first claim
-      let claim1 = claims[0];
-      let beforeText = htmlString.slice(0, claim1.start_index + numShift);
-      let claimText = htmlString.slice(
-        claim1.start_index + numShift,
-        claim1.end_index + numShift
-      );
-      //everything.push(this.createSpan(beforeText, claim1, claimText));
-      everythingString += ReactDOMServer.renderToStaticMarkup(
-        this.createSpan(beforeText, claim1, claimText)
-      );
-
-      //for the rest of the claims
-      for (let i = 0; i < claims.length - 1; ++i) {
-        let claim1 = claims[i];
-        let claim2 = claims[i + 1];
-        let beforeText = htmlString.slice(
-          claim1.end_index,
-          claim2.start_index + numShift
-        );
-        let claimText = htmlString.slice(
-          claim2.start_index + numShift,
-          claim2.end_index + numShift
-        );
-        //everything.push(this.createSpan(beforeText, claim2, claimText));
-        everythingString += ReactDOMServer.renderToStaticMarkup(
-          this.createSpan(beforeText, claim2, claimText)
-        );
-      }
-      //the rest of the text
-      let afterText = htmlString.slice(claims[claims.length - 1].end_index);
-      //everything.push(this.createTextSpan(afterText, 'afterText'));
-      everythingString += ReactDOMServer.renderToStaticMarkup(
-        this.createTextSpan(afterText, 'afterText')
-      );
-    }
-    //return everything;
-    return everythingString;
-  };
-  //just return a span for text
-  createTextSpan = (text, textId) => {
-    return <span key={`span-${textId}`}>{text}</span>;
-  };
-  //return a span for text and a claim
-  createSpan = (beforeText, claim, claimText) => {
-    return (
-      <span key={`span-${claim.id}`}>
-        <span> {beforeText} </span>
-        <span id={claim.id} className={`highlight type-${claim.type_id}`}>
-          {claimText}
-          <PopUp />
-        </span>
-      </span>
-    );
-  };
 
   render() {
     return (
