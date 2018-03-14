@@ -202,15 +202,39 @@ class TextEditor extends React.Component {
     this.setState({
       editorState
     });
-
-    if (!this.isSelection(editorState)) {
-      return;
-    }
+    /**
+      if (!this.isSelection(editorState)) {
+        return;
+      } **/
     this.setState({
       editorSelection: this._getTextSelection(
         editorState.getCurrentContent(),
         editorState.getSelection()
       )
+    });
+    let contentMap = convertToRaw(this.state.editorState.getCurrentContent());
+    let clickLocation = editorState.getSelection().getStartOffset();
+    let inRange = false;
+    let _blocks = contentMap['blocks'];
+    let currBlock = _blocks[0];
+    let styleRanges = currBlock['inlineStyleRanges'];
+    let claimText = '';
+    for (var i = 0; i < styleRanges.length; i++) {
+      let startBound = styleRanges[i].offset;
+      let endBound = styleRanges[i].length + startBound;
+      if ((clickLocation >= startBound) & (clickLocation <= endBound)) {
+        inRange = true;
+        // do something here to get the claim from offset and length
+        let fullArticle = currBlock['text'];
+        claimText = fullArticle.substring(startBound, endBound);
+        break;
+      }
+    }
+    this.setState({
+      clickInRange: inRange
+    });
+    this.setState({
+      claimSelectionText: claimText
     });
   };
 
@@ -272,9 +296,20 @@ class TextEditor extends React.Component {
           />
         </div>
         <div className="controlPanel column">
-          Text Selection: <br />
+          Text Selection Panel <br />
           {this.state.editorSelection}
+          {this.state.clickInRange ? (
+            <div>
+              <div> This is the claim you selected: </div>
+              <div> {this.state.claimSelectionText} </div>
+            </div>
+          ) : null}
         </div>
+        {this.state.clickInRange ? (
+          <div>
+            <button className="sourceButton"> Add Source </button>
+          </div>
+        ) : null}
       </div>
     );
   }
