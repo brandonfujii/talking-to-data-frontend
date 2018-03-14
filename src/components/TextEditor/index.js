@@ -54,10 +54,10 @@ class TextEditor extends React.Component {
 
   loadArticleIntoEditor = (article, claims) => {
     let editorState;
-    console.log(this.state);
+    //console.log(this.state);
     if (article.trim() != '') {
       var rawJsText = this.textToJSON(article, claims, this);
-      console.log(rawJsText);
+      //console.log(rawJsText);
       const content = convertFromRaw(JSON.parse(rawJsText));
       editorState = EditorState.createWithContent(content);
       editorState = EditorState.moveFocusToEnd(editorState);
@@ -83,7 +83,7 @@ class TextEditor extends React.Component {
     rawJSONText = rawJSONText.concat(`",
           "inlineStyleRanges": [`);
     /** **/
-    console.log(self.state);
+    //console.log(self.state);
     var ids = self.state.claimIds;
     //var ids = {};
     for (let i = 0; i < claims.length; i++) {
@@ -121,9 +121,9 @@ class TextEditor extends React.Component {
       ids[claimKey] = claims[i].id;
     }
     rawJSONText = rawJSONText.concat(`]}]}`);
-    console.log(ids);
-    this.setState({ claimIds: ids }, () => console.log(this.state.claimIds));
-
+    //console.log(ids);
+    //this.setState({ claimIds: ids }, () => console.log(this.state.claimIds));
+    this.setState({ claimIds: ids });
     return rawJSONText;
   };
 
@@ -251,7 +251,15 @@ class TextEditor extends React.Component {
       ),
       claimSelectionId: null
     });
-
+    /**
+    //test stuff
+    console.log("Start Index: ",this.state.editorState
+      .getSelection()
+      .getStartOffset());
+    console.log("End Index: ",this.state.editorState
+      .getSelection()
+      .getEndOffset());
+    **/
     if (!this.isSelection(editorState)) {
       let contentMap = convertToRaw(this.state.editorState.getCurrentContent());
       let clickLocation = this.state.editorState
@@ -281,18 +289,11 @@ class TextEditor extends React.Component {
             styleRanges[i].length +
             '-' +
             styleRanges[i].style;
-          try {
-            console.log(claimIdKey);
-            console.log(this.state.claimIds);
-            let claimId = this.state.claimIds[claimIdKey];
-            console.log('Claim id: ' + claimId);
-            this.setState({
-              claimSelectionId: claimId
-            });
-            console.log('something');
-          } catch (err) {
-            continue; //do something here?
-          }
+
+          let claimId = this.state.claimIds[claimIdKey];
+          this.setState({
+            claimSelectionId: claimId
+          });
           break; //assumption: no claim overlap
         }
       }
@@ -438,13 +439,23 @@ class TextEditor extends React.Component {
         </div>
         <div className="control-margin column clearfix">
           <div className="controlPanel">
-            Text Selection Panel <br />
+            <b>
+              <div>Text Selection Panel</div>
+            </b>
+            <br />
             {this.state.editorSelection}
             {this.state.clickInRange ? (
               <div>
-                <div> This is the claim you selected: </div>
-                <div> {this.state.claimSelectionText} </div>
-                <div>{selectedClaim ? selectedClaim.start_index : null} </div>
+                <i>
+                  <div> Selected Claim: </div>
+                </i>
+                <div>{this.state.claimSelectionText}</div>
+                <br />
+                <i>
+                  <div> Claim Id: </div>
+                </i>
+                <div>{this.state.claimSelectionId}</div>
+                <br />
               </div>
             ) : null}
             {this.state.clickInRange ? (
