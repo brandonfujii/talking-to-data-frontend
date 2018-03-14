@@ -31,21 +31,29 @@ const styleMap = {
 class TextEditor extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      editorState: EditorState.createEmpty(),
+      showHighlightOptions: false,
+      claimIds: {}
+    };
+
     let editorState = this.loadArticleIntoEditor(
       this.props.article,
       this.props.claims
     );
 
     this.state = {
-      editorState: editorState,
-      showHighlightOptions: false
+      ...this.state,
+      editorState
     };
   }
 
   loadArticleIntoEditor = (article, claims) => {
     let editorState;
+    console.log(this.state);
     if (article.trim() != '') {
-      var rawJsText = this.textToJSON(article, claims);
+      var rawJsText = this.textToJSON(article, claims, this);
       console.log(rawJsText);
       const content = convertFromRaw(JSON.parse(rawJsText));
       editorState = EditorState.createWithContent(content);
@@ -58,7 +66,7 @@ class TextEditor extends React.Component {
   };
 
   //put highlight styling onto claims
-  textToJSON = (text, claims) => {
+  textToJSON = (text, claims, self) => {
     // need escape characters for quotes
     text = text.split('"').join('\\"');
 
@@ -72,8 +80,9 @@ class TextEditor extends React.Component {
     rawJSONText = rawJSONText.concat(`",
           "inlineStyleRanges": [`);
     /** **/
-    //var ids = this.state.claimIds;
-    var ids = {};
+    console.log(self.state);
+    var ids = self.state.claimIds;
+    //var ids = {};
     for (let i = 0; i < claims.length; i++) {
       let claimKey = '';
       claimKey = claimKey.concat(
@@ -106,7 +115,9 @@ class TextEditor extends React.Component {
       ids[claimKey] = claims[i].id;
     }
     rawJSONText = rawJSONText.concat(`]}]}`);
-    this.setState({ claimIds: ids });
+    console.log(ids);
+    this.setState({ claimIds: ids }, () => console.log(this.state.claimIds));
+
     return rawJSONText;
   };
 
@@ -146,6 +157,7 @@ class TextEditor extends React.Component {
     let currBlock = _blocks[0];
     let articleText = currBlock['text'];
     this.props.updateArticle(articleText, editStartIndex);
+    //to do: set state of claimIds ??
   };
 
   keyBindingFn = e => {
@@ -248,18 +260,34 @@ class TextEditor extends React.Component {
       for (var i = 0; i < styleRanges.length; i++) {
         let startBound = styleRanges[i].offset;
         let endBound = styleRanges[i].length + startBound;
-        let claimId = styleRanges[i].id;
 
         if ((clickLocation >= startBound) & (clickLocation <= endBound)) {
           inRange = true;
+
           let fullArticle = currBlock['text'];
           claimText = fullArticle.substring(startBound, endBound);
-          console.log(claimId);
-          this.setState({
-            claimSelectionId: claimId
-          });
 
-          break;
+          //look up the claim we are clicking on dictionary
+          //{offset}-{length}-{style}
+          let claimIdKey =
+            startBound +
+            '-' +
+            styleRanges[i].length +
+            '-' +
+            styleRanges[i].style;
+          try {
+            console.log(claimIdKey);
+            console.log(this.state.claimIds);
+            let claimId = this.state.claimIds[claimIdKey];
+            console.log('Claim id: ' + claimId);
+            this.setState({
+              claimSelectionId: claimId
+            });
+            console.log('something');
+          } catch (err) {
+            continue; //do something here?
+          }
+          break; //assumption: no claim overlap
         }
       }
       this.setState({
