@@ -95,6 +95,8 @@ class Document extends Component {
     });
   }
 
+  addSource(claimId) {}
+
   render() {
     return (
       <div>

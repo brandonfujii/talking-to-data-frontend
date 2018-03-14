@@ -45,6 +45,7 @@ class TextEditor extends React.Component {
     let editorState;
     if (article.trim() != '') {
       var rawJsText = this.textToJSON(article, claims);
+      console.log(rawJsText);
       const content = convertFromRaw(JSON.parse(rawJsText));
       editorState = EditorState.createWithContent(content);
       editorState = EditorState.moveFocusToEnd(editorState);
@@ -76,6 +77,8 @@ class TextEditor extends React.Component {
       rawJSONText = rawJSONText.concat(claims[i].start_index);
       rawJSONText = rawJSONText.concat(`,"length":`);
       rawJSONText = rawJSONText.concat(claims[i].text.length);
+      rawJSONText = rawJSONText.concat(`,"id":`);
+      rawJSONText = rawJSONText.concat(claims[i].id);
       rawJSONText = rawJSONText.concat(`,"style":`);
       if (claims[i].type_id == 0) {
         rawJSONText = rawJSONText.concat(`"HIGHLIGHT0"}`);
@@ -213,7 +216,8 @@ class TextEditor extends React.Component {
       editorSelection: this._getTextSelection(
         editorState.getCurrentContent(),
         editorState.getSelection()
-      )
+      ),
+      claimSelectionId: null
     });
 
     if (!this.isSelection(editorState)) {
@@ -230,12 +234,19 @@ class TextEditor extends React.Component {
       for (var i = 0; i < styleRanges.length; i++) {
         let startBound = styleRanges[i].offset;
         let endBound = styleRanges[i].length + startBound;
+        console.log(styleRanges);
+        let claimId = styleRanges[i].id;
 
         if ((clickLocation >= startBound) & (clickLocation <= endBound)) {
           inRange = true;
           // do something here to get the claim from offset and length
           let fullArticle = currBlock['text'];
           claimText = fullArticle.substring(startBound, endBound);
+          console.log(claimId);
+          this.setState({
+            claimSelectionId: claimId
+          });
+
           break;
         }
       }
@@ -306,6 +317,7 @@ class TextEditor extends React.Component {
             <div>
               <div> This is the claim you selected: </div>
               <div> {this.state.claimSelectionText} </div>
+              <div> claim id: {this.state.claimSelectionId} </div>
             </div>
           ) : null}
           {this.state.clickInRange ? (
