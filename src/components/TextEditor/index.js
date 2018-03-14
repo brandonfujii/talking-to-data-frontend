@@ -270,18 +270,40 @@ class TextEditor extends React.Component {
   };
 
   _onHighlight0 = () => {
+    if (!this.isSelection(this.state.editorState)) {
+      return;
+    }
     const selection = this.state.editorState.getSelection();
     this._addClaim(selection, 0);
   };
 
   _onHighlight1 = () => {
+    if (!this.isSelection(this.state.editorState)) {
+      return;
+    }
     const selection = this.state.editorState.getSelection();
     this._addClaim(selection, 1);
   };
 
   _onHighlight2 = () => {
+    if (!this.isSelection(this.state.editorState)) {
+      return;
+    }
     const selection = this.state.editorState.getSelection();
     this._addClaim(selection, 2);
+  };
+
+  //toggle between showing add source input and not showing
+  requestAddSource = () => {
+    if (this.state.addSourceRequested) {
+      this.setState({
+        addSourceRequested: false
+      });
+    } else {
+      this.setState({
+        addSourceRequested: true
+      });
+    }
   };
 
   render() {
@@ -310,7 +332,20 @@ class TextEditor extends React.Component {
           ) : null}
           {this.state.clickInRange ? (
             <div>
-              <button className="sourceButton"> Add Source </button>
+              <button id="sourceButton" onClick={() => this.requestAddSource()}>
+                Add Source
+              </button>
+              {this.state.addSourceRequested ? (
+                <div>
+                  <div> Source Link: </div>
+                  <input type="text" placeholder="google.com" />
+                  <button id="submitInfoButton">
+                    {' '}
+                    {/** onclick add source**/}
+                    Submit Information
+                  </button>
+                </div>
+              ) : null}
             </div>
           ) : null}
         </div>
