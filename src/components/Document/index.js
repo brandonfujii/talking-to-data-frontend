@@ -21,9 +21,7 @@ class Document extends Component {
           start_index: 0,
           end_index: 15,
           type_id: 0,
-          source_id: null,
-          source_name: null,
-          source_description: null,
+          sources: [],
           date_created: new Date(),
           date_updated: new Date(),
           date_verified: null
@@ -35,9 +33,7 @@ class Document extends Component {
           start_index: 19,
           end_index: 63,
           type_id: 2,
-          source_id: null,
-          source_name: null,
-          source_description: null,
+          sources: [],
           date_created: new Date(),
           date_updated: new Date(),
           date_verified: null
@@ -50,9 +46,7 @@ class Document extends Component {
           start_index: 1383,
           end_index: 1547,
           type_id: 2,
-          source_id: null,
-          source_name: null,
-          source_description: null,
+          sources: [],
           date_created: new Date(),
           date_updated: new Date(),
           date_verified: null

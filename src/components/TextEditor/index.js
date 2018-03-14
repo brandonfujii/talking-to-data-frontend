@@ -256,7 +256,7 @@ class TextEditor extends React.Component {
       let currBlock = _blocks[0];
       let styleRanges = currBlock['inlineStyleRanges'];
       let claimText = '';
-      console.log(contentMap);
+
       for (var i = 0; i < styleRanges.length; i++) {
         let startBound = styleRanges[i].offset;
         let endBound = styleRanges[i].length + startBound;
@@ -314,9 +314,7 @@ class TextEditor extends React.Component {
       start_index,
       end_index,
       type_id: type,
-      source_id: null,
-      source_name: null,
-      source_description: null,
+      sources: [],
       date_created: new Date(),
       date_updated: new Date(),
       date_verified: null
@@ -362,7 +360,17 @@ class TextEditor extends React.Component {
     }
   };
 
+  findClaimById = claimId => {
+    return this.props.claims.find(claim => {
+      return claim.id == claimId;
+    });
+  };
+
   render() {
+    let selectedClaim = this.state.claimSelectionId
+      ? this.findClaimById(this.state.claimSelectionId)
+      : null;
+
     return (
       <div className="content-div">
         <header className="top-header">
@@ -414,7 +422,7 @@ class TextEditor extends React.Component {
               <div>
                 <div> This is the claim you selected: </div>
                 <div> {this.state.claimSelectionText} </div>
-                <div> claim id: {this.state.claimSelectionId} </div>
+                <div>{selectedClaim ? selectedClaim.start_index : null} </div>
               </div>
             ) : null}
             {this.state.clickInRange ? (
