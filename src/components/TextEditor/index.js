@@ -72,7 +72,15 @@ class TextEditor extends React.Component {
     rawJSONText = rawJSONText.concat(`",
           "inlineStyleRanges": [`);
     /** **/
+    //var ids = this.state.claimIds;
+    var ids = {};
     for (let i = 0; i < claims.length; i++) {
+      let claimKey = '';
+      claimKey = claimKey.concat(
+        claims[i].start_index,
+        '-',
+        claims[i].text.length
+      );
       /** append claims **/
       rawJSONText = rawJSONText.concat(`{"offset":`);
       rawJSONText = rawJSONText.concat(claims[i].start_index);
@@ -83,17 +91,22 @@ class TextEditor extends React.Component {
       rawJSONText = rawJSONText.concat(`,"style":`);
       if (claims[i].type_id == 0) {
         rawJSONText = rawJSONText.concat(`"HIGHLIGHT0"}`);
+        claimKey = claimKey.concat('-HIGHLIGHT0');
       } else if (claims[i].type_id == 1) {
         rawJSONText = rawJSONText.concat(`"HIGHLIGHT1"}`);
+        claimKey = claimKey.concat('-HIGHLIGHT1');
       } else if (claims[i].type_id == 2) {
         rawJSONText = rawJSONText.concat(`"HIGHLIGHT2"}`);
+        claimKey = claimKey.concat('-HIGHLIGHT2');
       }
       if (i != claims.length - 1) {
         //not at the last claim
         rawJSONText = rawJSONText.concat(`,`);
       }
+      ids[claimKey] = claims[i].id;
     }
     rawJSONText = rawJSONText.concat(`]}]}`);
+    this.setState({ claimIds: ids });
     return rawJSONText;
   };
 
