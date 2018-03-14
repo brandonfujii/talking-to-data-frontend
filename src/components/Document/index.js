@@ -89,7 +89,21 @@ class Document extends Component {
     });
   }
 
-  addSource(claimId) {}
+  addSource(claimId, source) {
+    let claims = this.state.claims.slice();
+
+    claims.map((claim, i) => {
+      if (claim.id == claimId) {
+        let sources = claim.sources || [];
+        sources.push(source);
+        claim.sources = sources;
+      }
+    });
+
+    this.setState({
+      claims
+    });
+  }
 
   render() {
     return (
@@ -99,6 +113,7 @@ class Document extends Component {
           claims={this.state.claims}
           addClaim={this.addClaim.bind(this)}
           updateArticle={this.updateArticle.bind(this)}
+          addSource={this.addSource.bind(this)}
         />
       </div>
     );

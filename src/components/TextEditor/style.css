@@ -7,6 +7,7 @@ body {
   background-color: #eee !important;
   font-family: 'Open Sans', sans-serif;
   font-size: 11px;
+  color: #484848;
 }
 
 h1,
@@ -96,6 +97,62 @@ div.control-margin {
   border-left: 1px solid #ddd;
   background-color: #fff;
   overflow-y: scroll;
-  padding: 7px;
+  padding: 10px 15px;
   height: 100%;
+}
+
+.block-text {
+  padding: 10px;
+  font-size: 0.9rem;
+  color: #484848 !important;
+  font-weight: 00;
+  background-color: #eee;
+  border-radius: 3px;
+  margin-bottom: 15px;
+}
+
+.block-title {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  display: block;
+  font-size: 12px;
+}
+
+.claim-type.pronoun {
+  color: salmon;
+}
+
+.claim-type.number {
+  color: #6495ed;
+}
+
+.claim-type.quote {
+  color: mediumseagreen;
+}
+
+.source-list ul > li {
+  list-style-type: none;
+}
+
+.source-list ul > li > a > .source-title {
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.source-list .source-list-title {
+  font-size: 16px;
+  margin-bottom: 10px;
+  margin-left: 20px;
+  font-weight: 500;
+}
+
+.source-list .null-sources {
+  margin-left: 30px;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+#submitInfoButton {
+  margin-right: 10px;
 }

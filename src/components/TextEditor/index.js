@@ -16,6 +16,8 @@ import PropTypes from 'prop-types';
 import style from './style.css';
 import ReactDOMServer from 'react-dom/server';
 
+const highlights = ['pronoun', 'number', 'quote'];
+
 const styleMap = {
   HIGHLIGHT0: {
     backgroundColor: 'lightsalmon'
@@ -35,7 +37,17 @@ class TextEditor extends React.Component {
     this.state = {
       editorState: EditorState.createEmpty(),
       showHighlightOptions: false,
-      claimIds: {}
+      claimIds: {},
+      addSourceRequested: false,
+      source_form: {
+        source_type: null,
+        source_title: null,
+        source_description: null,
+        source_link: null,
+        source_number: null,
+        source_person: null
+      },
+      sourceFormType: 'link'
     };
 
     let editorState = this.loadArticleIntoEditor(
@@ -51,10 +63,8 @@ class TextEditor extends React.Component {
 
   loadArticleIntoEditor = (article, claims) => {
     let editorState;
-    console.log(this.state);
     if (article.trim() != '') {
       var rawJsText = this.textToJSON(article, claims, this);
-      console.log(rawJsText);
       const content = convertFromRaw(JSON.parse(rawJsText));
       editorState = EditorState.createWithContent(content);
       editorState = EditorState.moveFocusToEnd(editorState);
@@ -276,14 +286,10 @@ class TextEditor extends React.Component {
             '-' +
             styleRanges[i].style;
           try {
-            console.log(claimIdKey);
-            console.log(this.state.claimIds);
             let claimId = this.state.claimIds[claimIdKey];
-            console.log('Claim id: ' + claimId);
             this.setState({
               claimSelectionId: claimId
             });
-            console.log('something');
           } catch (err) {
             continue; //do something here?
           }
@@ -297,7 +303,8 @@ class TextEditor extends React.Component {
       });
     } else {
       this.setState({
-        showHighlightOptions: true
+        showHighlightOptions: true,
+        addSourceRequested: false
       });
     }
   };
@@ -349,21 +356,97 @@ class TextEditor extends React.Component {
 
   //toggle between showing add source input and not showing
   requestAddSource = () => {
-    if (this.state.addSourceRequested) {
-      this.setState({
-        addSourceRequested: false
-      });
-    } else {
-      this.setState({
-        addSourceRequested: true
-      });
-    }
+    this.setState({
+      addSourceRequested: true
+    });
   };
 
   findClaimById = claimId => {
     return this.props.claims.find(claim => {
       return claim.id == claimId;
     });
+  };
+
+  handleAddSource = type => {
+    let source;
+    let form = this.state.source_form;
+
+    if (type == 'link') {
+      source = {
+        source_type: type,
+        source_link: form.source_link,
+        source_title: form.source_title,
+        source_description: form.source_description
+      };
+    } else {
+      source = {
+        source_type: type,
+        source_title: form.source_title,
+        source_description: form.source_description,
+        source_person: form.source_person,
+        source_number: form.source_number
+      };
+    }
+
+    this.props.addSource(this.state.claimSelectionId, source);
+    this.nullifySourceForm();
+  };
+
+  nullifySourceForm = () => {
+    this.setState({
+      source_form: {
+        source_type: null,
+        source_title: null,
+        source_description: null,
+        source_link: null,
+        source_number: null,
+        source_person: null
+      },
+      addSourceRequested: false
+    });
+  };
+
+  updateFormInput = (id, value) => {
+    let form = this.state.source_form;
+    form[id] = value;
+    this.setState({
+      source_form: form
+    });
+  };
+
+  renderSources = claim => {
+    if (claim) {
+      return claim.sources.map((source, i) => {
+        if (source.source_type == 'link') {
+          return (
+            <li className="source block-text" key={source.source_title}>
+              <a href={`${source.source_link}`} target="_blank">
+                <span className="block-title">
+                  <i class="fa fa-link" /> Link
+                </span>
+                <div className="source-title">{source.source_title}</div>
+                <div className="source-description">
+                  {source.source_description}
+                </div>
+              </a>
+            </li>
+          );
+        } else {
+          return (
+            <li className="source block-text" key={source.source_person}>
+              <span className="block-title">
+                <i class="fa fa-phone" /> Phone Contact
+              </span>
+              <div className="source-title">{source.source_person}</div>
+              <div className="source-description">
+                {source.source_number} - {source.source_description}
+              </div>
+            </li>
+          );
+        }
+      });
+    }
+    return null;
   };
 
   render() {
@@ -416,13 +499,35 @@ class TextEditor extends React.Component {
         </div>
         <div className="control-margin column clearfix">
           <div className="controlPanel">
-            Text Selection Panel <br />
-            {this.state.editorSelection}
             {this.state.clickInRange ? (
               <div>
-                <div> This is the claim you selected: </div>
-                <div> {this.state.claimSelectionText} </div>
-                <div>{selectedClaim ? selectedClaim.start_index : null} </div>
+                {selectedClaim ? (
+                  <div>
+                    <div className="block-text" id="selected-claim">
+                      <span
+                        className={`block-title claim-type ${
+                          highlights[selectedClaim.type_id]
+                        }`}
+                      >
+                        {highlights[selectedClaim.type_id]}
+                      </span>
+                      {this.state.claimSelectionText}
+                    </div>
+                    <div className="source-list">
+                      <p className="source-list-title">
+                        {selectedClaim && selectedClaim.sources.length > 0
+                          ? selectedClaim.sources.length
+                          : ''}{' '}
+                        Verified Source(s)
+                      </p>
+                      {selectedClaim && selectedClaim.sources.length ? (
+                        <ul>{this.renderSources(selectedClaim)}</ul>
+                      ) : (
+                        <div className="null-sources">No sources added</div>
+                      )}
+                    </div>
+                  </div>
+                ) : null}
               </div>
             ) : null}
             {this.state.clickInRange ? (
@@ -439,34 +544,93 @@ class TextEditor extends React.Component {
                 ) : null}
                 {this.state.addSourceRequested ? (
                   <div>
-                    <form>
+                    <form
+                      onSubmit={e => {
+                        e.preventDefault();
+                        if (this.state.sourceFormType == 'link') {
+                          this.handleAddSource('link');
+                        } else {
+                          this.handleAddSource('phonecall');
+                        }
+                      }}
+                    >
+                      {this.state.sourceFormType == 'link' ? (
+                        <div className="form-group">
+                          <label htmlFor="source_link">Source URL</label>
+                          <input
+                            id="source_link"
+                            className="form-control"
+                            onChange={e =>
+                              this.updateFormInput(e.target.id, e.target.value)
+                            }
+                            value={this.state.source_form.source_link || ''}
+                            placeholder=""
+                          />
+                          <small
+                            id="source-link-help"
+                            className="form-text text-muted"
+                          >
+                            The link to the source that verifies this claim.
+                          </small>
+                        </div>
+                      ) : (
+                        <div className="form-group">
+                          <label htmlFor="source_number">
+                            Source Contact Number
+                          </label>
+                          <input
+                            id="source_number"
+                            className="form-control"
+                            onChange={e =>
+                              this.updateFormInput(e.target.id, e.target.value)
+                            }
+                            value={this.state.source_form.source_number || ''}
+                            placeholder="(555) 555-5555"
+                          />
+                        </div>
+                      )}
+                      {this.state.sourceFormType == 'phonecall' ? (
+                        <div className="form-group">
+                          <label htmlFor="source_person">
+                            Source Contact Name
+                          </label>
+                          <input
+                            id="source_person"
+                            className="form-control"
+                            onChange={e =>
+                              this.updateFormInput(e.target.id, e.target.value)
+                            }
+                            value={this.state.source_form.source_person || ''}
+                            placeholder="E.g Barack Obama, U.S EPA"
+                          />
+                        </div>
+                      ) : (
+                        <div className="form-group">
+                          <label htmlFor="source_title">Source Title</label>
+                          <input
+                            id="source_title"
+                            onChange={e =>
+                              this.updateFormInput(e.target.id, e.target.value)
+                            }
+                            className="form-control"
+                            value={this.state.source_form.source_title || ''}
+                            placeholder=""
+                          />
+                        </div>
+                      )}
                       <div className="form-group">
-                        <label htmlFor="source-link">Source URL</label>
-                        <input
-                          id="source-link"
-                          className="form-control"
-                          placeholder="https://google.com"
-                        />
-                        <small
-                          id="source-link-help"
-                          className="form-text text-muted"
-                        >
-                          The link to the source that verifies this claim.
-                        </small>
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="source-title">Source Title</label>
-                        <input
-                          id="source-title"
-                          className="form-control"
-                          placeholder=""
-                        />
-                      </div>
-                      <div class="form-group">
-                        <label htmlFor="source-desc">Source Description</label>
+                        <label htmlFor="source_description">
+                          Source Description
+                        </label>
                         <textarea
                           className="form-control"
-                          id="source-desc"
+                          id="source_description"
+                          onChange={e =>
+                            this.updateFormInput(e.target.id, e.target.value)
+                          }
+                          value={
+                            this.state.source_form.source_description || ''
+                          }
                           rows="3"
                         />
                         <small
@@ -477,13 +641,42 @@ class TextEditor extends React.Component {
                           verifies this claim.
                         </small>
                       </div>
+                      <p id="add-phone-call" className="form-text">
+                        <a
+                          href="#"
+                          onClick={e =>
+                            this.setState({
+                              sourceFormType:
+                                this.state.sourceFormType == 'link'
+                                  ? 'phonecall'
+                                  : 'link'
+                            })
+                          }
+                        >
+                          {this.state.sourceFormType == 'link' ? (
+                            <span>+ Add a phone call source</span>
+                          ) : (
+                            <span>+ Add a link source</span>
+                          )}
+                        </a>
+                      </p>
                       <button
-                        type="text"
+                        type="submit"
                         className="btn btn-primary"
                         id="submitInfoButton"
                       >
-                        {/** onclick add source**/}
                         Verify Claim
+                      </button>
+                      <button
+                        type="text"
+                        className="btn btn-danger"
+                        id="cancelSource"
+                        onClick={e => {
+                          e.preventDefault();
+                          this.nullifySourceForm();
+                        }}
+                      >
+                        Cancel
                       </button>
                     </form>
                   </div>
@@ -501,7 +694,8 @@ TextEditor.propTypes = {
   article: PropTypes.string.isRequired,
   claims: PropTypes.array.isRequired,
   addClaim: PropTypes.func.isRequired,
-  updateArticle: PropTypes.func.isRequired
+  updateArticle: PropTypes.func.isRequired,
+  addSource: PropTypes.func.isRequired
 };
 
 export default TextEditor;
