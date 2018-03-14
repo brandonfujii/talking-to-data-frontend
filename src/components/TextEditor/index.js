@@ -226,14 +226,11 @@ class TextEditor extends React.Component {
       let currBlock = _blocks[0];
       let styleRanges = currBlock['inlineStyleRanges'];
       let claimText = '';
-
       for (var i = 0; i < styleRanges.length; i++) {
         let startBound = styleRanges[i].offset;
         let endBound = styleRanges[i].length + startBound;
-
         if ((clickLocation >= startBound) & (clickLocation <= endBound)) {
           inRange = true;
-          // do something here to get the claim from offset and length
           let fullArticle = currBlock['text'];
           claimText = fullArticle.substring(startBound, endBound);
           break;
@@ -340,7 +337,6 @@ class TextEditor extends React.Component {
                   <div> Source Link: </div>
                   <input type="text" placeholder="google.com" />
                   <button id="submitInfoButton">
-                    {' '}
                     {/** onclick add source**/}
                     Submit Information
                   </button>
