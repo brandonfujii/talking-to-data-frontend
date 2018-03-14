@@ -31,12 +31,13 @@
     "flow": "flow",
     "pretty": "./node_modules/.bin/prettier --single-quote --write \"src/**/*.{js,jsx,json,css}\"",
     "precommit": "lint-staged",
-    "start": "NODE_PATH='src/' react-scripts start",
+    "start": "cross-env NODE_PATH=\"src\" react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "cross-env": "5.1.4",
     "flow-bin": "latest",
     "husky": "0.14.3",
     "lint-staged": "6.1.0",
