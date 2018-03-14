@@ -289,9 +289,28 @@ class Document extends Component {
     let claims = this.state.claims.slice();
 
     claims.map((claim, i) => {
-      if (claim.id == claimId) {
+      if (claim.id === claimId) {
         let sources = claim.sources || [];
         sources.push(source);
+        claim.sources = sources;
+      }
+    });
+
+    this.setState({
+      claims
+    });
+  }
+
+  removeSource(claimId, sourceId) {
+    let claims = this.state.claims.slice();
+
+    claims.map((claim, i) => {
+      if (claim.id === claimId) {
+        let sources = claim.sources || [];
+        sources = sources.filter((source, j) => {
+          return source.source_id !== sourceId;
+        });
+
         claim.sources = sources;
       }
     });
@@ -311,6 +330,7 @@ class Document extends Component {
           updateArticle={this.updateArticle.bind(this)}
           addSource={this.addSource.bind(this)}
           removeClaim={this.removeClaim.bind(this)}
+          removeSource={this.removeSource.bind(this)}
         />
       </div>
     );

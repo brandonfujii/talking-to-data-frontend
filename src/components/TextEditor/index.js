@@ -58,6 +58,10 @@ class TextEditor extends React.Component {
     };
   }
 
+  generateID() {
+    return Math.random().toString();
+  }
+
   loadArticleIntoEditor = (article, claims) => {
     let editorState;
     if (article.trim() != '') {
@@ -387,12 +391,17 @@ class TextEditor extends React.Component {
     });
   };
 
+  removeVerifiedSource = (claimId, sourceId) => {
+    this.props.removeSource(claimId, sourceId);
+  };
+
   handleAddSource = type => {
     let source;
     let form = this.state.source_form;
 
     if (type == 'link') {
       source = {
+        source_id: this.generateID(),
         source_type: type,
         source_link: form.source_link,
         source_title: form.source_title,
@@ -400,6 +409,7 @@ class TextEditor extends React.Component {
       };
     } else {
       source = {
+        source_id: this.generateID(),
         source_type: type,
         source_title: form.source_title,
         source_description: form.source_description,
@@ -439,11 +449,21 @@ class TextEditor extends React.Component {
       return claim.sources.map((source, i) => {
         if (source.source_type == 'link') {
           return (
-            <li className="source block-text" key={source.source_title}>
+            <li className="source block-text" key={source.source_id}>
               <a href={`${source.source_link}`} target="_blank">
                 <span className="block-title">
-                  <i class="fa fa-link" /> Link
+                  <i className="fa fa-link" /> Link
                 </span>
+                <i
+                  className="fa fa-times remove"
+                  onClick={e => {
+                    e.preventDefault();
+                    this.removeVerifiedSource(
+                      this.state.claimSelectionId,
+                      source.source_id
+                    );
+                  }}
+                />
                 <div className="source-title">{source.source_title}</div>
                 <div className="source-description">
                   {source.source_description}
@@ -453,10 +473,20 @@ class TextEditor extends React.Component {
           );
         } else {
           return (
-            <li className="source block-text" key={source.source_person}>
+            <li className="source block-text" key={source.source_id}>
               <span className="block-title">
                 <i class="fa fa-phone" /> Phone Contact
               </span>
+              <i
+                className="fa fa-times remove"
+                onClick={e => {
+                  e.preventDefault();
+                  this.removeVerifiedSource(
+                    this.state.claimSelectionId,
+                    source.source_id
+                  );
+                }}
+              />
               <div className="source-title">{source.source_person}</div>
               <div className="source-description">
                 {source.source_number} - {source.source_description}
@@ -732,7 +762,8 @@ TextEditor.propTypes = {
   addClaim: PropTypes.func.isRequired,
   updateArticle: PropTypes.func.isRequired,
   addSource: PropTypes.func.isRequired,
-  removeClaim: PropTypes.func.isRequired
+  removeClaim: PropTypes.func.isRequired,
+  removeSource: PropTypes.func.isRequired
 };
 
 export default TextEditor;
