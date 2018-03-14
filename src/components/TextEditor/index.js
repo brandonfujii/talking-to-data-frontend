@@ -230,6 +230,7 @@ class TextEditor extends React.Component {
       let currBlock = _blocks[0];
       let styleRanges = currBlock['inlineStyleRanges'];
       let claimText = '';
+      console.log(contentMap);
       for (var i = 0; i < styleRanges.length; i++) {
         let startBound = styleRanges[i].offset;
         let endBound = styleRanges[i].length + startBound;

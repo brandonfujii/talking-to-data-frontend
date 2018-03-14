@@ -13,6 +13,10 @@ h2,
 h3 {
   font-family: 'Lora', serif;
 }
+button {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px;
+}
 
 div.content-div {
   height: 500px;
