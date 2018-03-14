@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 class Filter extends Component {
   constructor(props) {
@@ -15,13 +14,5 @@ class Filter extends Component {
     );
   }
 }
-
-/*
-Filter.propTypes = {
-  article: PropTypes.string.isRequired,
-  claims: PropTypes.array.isRequired,
-  filterByClaimType: PropTypes.func.isRequired
-};
-*/
 
 export default Filter;

@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import Filter from '../Filter';
 import TextEditor from '../TextEditor';
-
-const TYPES = {
-  0: 'proper_noun',
-  1: 'number',
-  2: 'quotes'
-};
 
 class Document extends Component {
   constructor(props) {
@@ -282,6 +275,16 @@ class Document extends Component {
     });
   }
 
+  removeClaim(claimId) {
+    let claims = this.state.claims.filter(claim => {
+      return claim.id !== claimId;
+    });
+
+    this.setState({
+      claims
+    });
+  }
+
   addSource(claimId, source) {
     let claims = this.state.claims.slice();
 
@@ -307,6 +310,7 @@ class Document extends Component {
           addClaim={this.addClaim.bind(this)}
           updateArticle={this.updateArticle.bind(this)}
           addSource={this.addSource.bind(this)}
+          removeClaim={this.removeClaim.bind(this)}
         />
       </div>
     );

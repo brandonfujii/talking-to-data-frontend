@@ -1,20 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {
-  ContentState,
   Editor,
   EditorState,
   RichUtils,
   convertToRaw,
   convertFromRaw,
-  convertFromHTML,
-  Modifier,
   getDefaultKeyBinding
 } from 'draft-js';
-import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
 import PropTypes from 'prop-types';
 import style from './style.css';
-import ReactDOMServer from 'react-dom/server';
 
 const highlights = ['pronoun', 'number', 'quote', 'date'];
 
@@ -387,10 +381,10 @@ class TextEditor extends React.Component {
   };
 
   removeHighlightedClaim = claimId => {
-    let claim = this.findClaimById(claimId);
-
-    if (claim) {
-    }
+    this.props.removeClaim(claimId);
+    this.setState({
+      claimSelectionId: null
+    });
   };
 
   handleAddSource = type => {
@@ -545,7 +539,15 @@ class TextEditor extends React.Component {
                       >
                         {highlights[selectedClaim.type_id]}
                       </span>
-                      {this.state.claimSelectionText}
+                      <i
+                        className="fa fa-times remove"
+                        onClick={e =>
+                          this.removeHighlightedClaim(
+                            this.state.claimSelectionId
+                          )
+                        }
+                      />
+                      <div>{this.state.claimSelectionText}</div>
                     </div>
                     <div className="source-list">
                       <p className="source-list-title">
@@ -729,7 +731,8 @@ TextEditor.propTypes = {
   claims: PropTypes.array.isRequired,
   addClaim: PropTypes.func.isRequired,
   updateArticle: PropTypes.func.isRequired,
-  addSource: PropTypes.func.isRequired
+  addSource: PropTypes.func.isRequired,
+  removeClaim: PropTypes.func.isRequired
 };
 
 export default TextEditor;

@@ -127,6 +127,19 @@ div.control-margin {
   font-weight: 700;
   display: block;
   font-size: 12px;
+  position: relative;
+  top: -5px;
+  display: inline-block;
+}
+
+.remove {
+  float: right;
+  color: #bbb;
+  cursor: pointer;
+}
+
+.remove:hover {
+  color: #555;
 }
 
 .claim-type.pronoun {
@@ -173,4 +186,8 @@ div.control-margin {
 
 #submitInfoButton {
   margin-right: 10px;
+}
+
+#sourceButton {
+  margin-left: 30px;
 }
