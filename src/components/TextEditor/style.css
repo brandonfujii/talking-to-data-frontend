@@ -4,6 +4,7 @@
 }
 
 body {
+  background-color: #eee !important;
   font-family: 'Open Sans', sans-serif;
   font-size: 11px;
 }
@@ -14,25 +15,83 @@ h3 {
   font-family: 'Lora', serif;
 }
 
+.btn.btn-outline-primary.highlight-btn {
+  font-size: 13px;
+  margin-top: 15px;
+  margin-left: 10px;
+}
+
+.highlight-btn#proper-noun {
+  border-color: lightsalmon;
+  color: lightsalmon;
+}
+
+.highlight-btn#proper-noun:hover {
+  background-color: lightsalmon;
+  color: #fff;
+}
+
+.highlight-btn#number {
+  border-color: lightblue;
+  color: lightblue;
+}
+
+.highlight-btn#number:hover {
+  background-color: lightblue;
+  color: #fff;
+}
+
+.highlight-btn#quote {
+  border-color: lightgreen;
+  color: lightgreen;
+}
+
+.highlight-btn#quote:hover {
+  background-color: lightgreen;
+  color: #fff;
+}
+
+.clearfix::after {
+  content: '';
+  clear: both;
+  display: table;
+}
+
 div.content-div {
-  height: 500px;
+  height: 100vh;
+}
+
+.top-header {
+  height: 60px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+}
+
+div.editor-margin {
+  width: 65%;
+  float: left;
+  padding: 0px 15px;
+  padding-top: 10px;
 }
 
 div.editor-div {
-  border: solid;
-  border-color: black;
+  background: #fff;
   overflow-y: scroll;
-  padding: 15px 25px;
+  padding: 40px;
   line-height: 2;
-  width: 75%;
+  box-shadow: 0 0 0 0.75pt #d1d1d1, 0 0 3pt 0.75pt #ccc;
+}
+
+div.control-margin {
+  width: 35%;
   float: left;
   height: 100%;
 }
+
 .controlPanel {
-  border: solid;
-  border-color: black;
+  border-left: 1px solid #ddd;
+  background-color: #fff;
   overflow-y: scroll;
-  padding: 5px;
-  width: 20%;
+  padding: 7px;
   height: 100%;
 }

@@ -37,7 +37,8 @@ class TextEditor extends React.Component {
     );
 
     this.state = {
-      editorState: editorState
+      editorState: editorState,
+      showHighlightOptions: false
     };
   }
 
@@ -249,7 +250,12 @@ class TextEditor extends React.Component {
       }
       this.setState({
         clickInRange: inRange,
-        claimSelectionText: claimText
+        claimSelectionText: claimText,
+        showHighlightOptions: false
+      });
+    } else {
+      this.setState({
+        showHighlightOptions: true
       });
     }
   };
@@ -317,45 +323,124 @@ class TextEditor extends React.Component {
   render() {
     return (
       <div className="content-div">
-        <button onClick={this._onHighlight0}> Highlight Proper Noun </button>
-        <button onClick={this._onHighlight1}> Highlight Number </button>
-        <button onClick={this._onHighlight2}> Highlight Quote </button>
-        <div className="editor-div column">
-          <Editor
-            customStyleMap={styleMap}
-            editorState={this.state.editorState}
-            handleKeyCommand={this.handleKeyCommand}
-            onChange={this.onChange}
-            keyBindingFn={this.keyBindingFn}
-          />
-        </div>
-        <div className="controlPanel column">
-          Text Selection Panel <br />
-          {this.state.editorSelection}
-          {this.state.clickInRange ? (
+        <header className="top-header">
+          {this.state.showHighlightOptions ? (
             <div>
-              <div> This is the claim you selected: </div>
-              <div> {this.state.claimSelectionText} </div>
-              <div> claim id: {this.state.claimSelectionId} </div>
-            </div>
-          ) : null}
-          {this.state.clickInRange ? (
-            <div>
-              <button id="sourceButton" onClick={() => this.requestAddSource()}>
-                Add Source
+              <button
+                type="button"
+                className="highlight-btn btn btn-outline-primary"
+                id="proper-noun"
+                onClick={this._onHighlight0}
+              >
+                Proper Noun
               </button>
-              {this.state.addSourceRequested ? (
-                <div>
-                  <div> Source Link: </div>
-                  <input type="text" placeholder="google.com" />
-                  <button id="submitInfoButton">
-                    {/** onclick add source**/}
-                    Submit Information
-                  </button>
-                </div>
-              ) : null}
+              <button
+                type="button"
+                className="highlight-btn btn btn-outline-primary"
+                id="number"
+                onClick={this._onHighlight1}
+              >
+                Number
+              </button>
+              <button
+                type="button"
+                className="highlight-btn btn btn-outline-primary"
+                id="quote"
+                onClick={this._onHighlight2}
+              >
+                Quote
+              </button>
             </div>
           ) : null}
+        </header>
+        <div className="editor-margin column clearfix">
+          <div className="editor-div">
+            <Editor
+              customStyleMap={styleMap}
+              editorState={this.state.editorState}
+              handleKeyCommand={this.handleKeyCommand}
+              onChange={this.onChange}
+              keyBindingFn={this.keyBindingFn}
+            />
+          </div>
+        </div>
+        <div className="control-margin column clearfix">
+          <div className="controlPanel">
+            Text Selection Panel <br />
+            {this.state.editorSelection}
+            {this.state.clickInRange ? (
+              <div>
+                <div> This is the claim you selected: </div>
+                <div> {this.state.claimSelectionText} </div>
+                <div> claim id: {this.state.claimSelectionId} </div>
+              </div>
+            ) : null}
+            {this.state.clickInRange ? (
+              <div>
+                {!this.state.addSourceRequested ? (
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    id="sourceButton"
+                    onClick={() => this.requestAddSource()}
+                  >
+                    Add Source
+                  </button>
+                ) : null}
+                {this.state.addSourceRequested ? (
+                  <div>
+                    <form>
+                      <div className="form-group">
+                        <label htmlFor="source-link">Source URL</label>
+                        <input
+                          id="source-link"
+                          className="form-control"
+                          placeholder="https://google.com"
+                        />
+                        <small
+                          id="source-link-help"
+                          className="form-text text-muted"
+                        >
+                          The link to the source that verifies this claim.
+                        </small>
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="source-title">Source Title</label>
+                        <input
+                          id="source-title"
+                          className="form-control"
+                          placeholder=""
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label htmlFor="source-desc">Source Description</label>
+                        <textarea
+                          className="form-control"
+                          id="source-desc"
+                          rows="3"
+                        />
+                        <small
+                          id="source-desc-help"
+                          className="form-text text-muted"
+                        >
+                          1-2 sentences on what this source is and how it
+                          verifies this claim.
+                        </small>
+                      </div>
+                      <button
+                        type="text"
+                        className="btn btn-primary"
+                        id="submitInfoButton"
+                      >
+                        {/** onclick add source**/}
+                        Verify Claim
+                      </button>
+                    </form>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
     );
