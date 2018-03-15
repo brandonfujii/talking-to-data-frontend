@@ -317,6 +317,7 @@ class TextEditor extends React.Component {
       });
     } else {
       this.setState({
+        clickInRange: false,
         showHighlightOptions: true,
         addSourceRequested: false
       });
