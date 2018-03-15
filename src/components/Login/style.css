@@ -1,1 +1,13 @@
+#login {
+  height: 500px;
+}
 
+#login-form {
+  width: 300px;
+  height: 300px;
+  padding: 25px;
+  margin: 100px auto;
+  background: #fff;
+  border-radius: 3px;
+  box-shadow: 0 0 0 0.75pt #d1d1d1, 0 0 3pt 0.75pt #ccc;
+}

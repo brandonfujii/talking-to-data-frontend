@@ -571,6 +571,9 @@ class TextEditor extends React.Component {
                     onClick={e => {
                       e.preventDefault();
                       this.setState({
+                        clickInRange: false,
+                        showHighlightOptions: false,
+                        addSourceRequested: false,
                         nav_state: 'stats'
                       });
                     }}
