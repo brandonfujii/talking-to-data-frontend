@@ -1,1 +1,11 @@
+#upload {
+  height: 500px;
+}
 
+#upload-form {
+  width: 500px;
+  padding: 25px;
+  margin: 100px auto;
+  background: #fff;
+  border-radius: 3px;
+}

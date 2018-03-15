@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import renderHTML from 'react-render-html';
+import style from './style.css';
 
 class Upload extends Component {
   constructor(props) {
@@ -24,22 +25,25 @@ class Upload extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <div className="form-group">
-          <label>
-            Upload article:
-            <input
-              type="file"
-              class="form-control-file"
-              ref={input => {
-                this.fileInput = input;
-              }}
-            />
-          </label>
-          <br />
-          <button type="submit">Upload</button>
+      <div id="upload">
+        <div id="upload-form">
+          <form onSubmit={this.handleSubmit}>
+            <div className="form-group">
+              <label>Upload article</label>
+              <input
+                type="file"
+                class="form-control-file"
+                ref={input => {
+                  this.fileInput = input;
+                }}
+              />
+            </div>
+            <button type="submit" className="btn btn-primary">
+              Upload
+            </button>
+          </form>
         </div>
-      </form>
+      </div>
     );
   }
 }
