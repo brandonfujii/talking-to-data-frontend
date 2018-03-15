@@ -27,12 +27,12 @@ button {
 }
 
 .highlight-btn#general {
-  border-color: brown;
-  color: brown;
+  border-color: gray;
+  color: gray;
 }
 
 .highlight-btn#general:hover {
-  background-color: brown;
+  background-color: gray;
   color: #fff;
 }
 

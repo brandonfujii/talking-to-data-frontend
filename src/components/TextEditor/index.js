@@ -26,7 +26,7 @@ const styleMap = {
     backgroundColor: 'violet'
   },
   HIGHLIGHT4: {
-    backgroundColor: 'tan'
+    backgroundColor: 'lightgray'
   }
 };
 
