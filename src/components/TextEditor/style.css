@@ -22,12 +22,36 @@ h3 {
 }
 
 #stats {
-  padding: 25px;
   background: #fff;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  justify-content: center;
 }
 
-#stats .verify-stats li {
-  display: inline-block;
+table.verify-stats {
+  text-align: center;
+  font-weight: normal;
+  margin: 25% 0 15% 0;
+}
+
+.verify-stats td {
+  padding: 0px 25px;
+}
+
+#verify-stats-numbers {
+  font-size: 25px;
+}
+
+#verify-stats-labels {
+  font-size: 13px;
+}
+
+.claim-stats {
+  margin: 0 auto;
+  width: 150px;
 }
 
 button {

@@ -636,33 +636,32 @@ class TextEditor extends React.Component {
           <div id="stats">
             {numClaims > 0 ? (
               <div id="statistics">
-                <ul className="verify-stats">
-                  <li>
-                    <div>{numClaims}</div>
-                    <div>claims highlighted</div>
-                  </li>
-                  <li>
-                    <div>{numVerifiedClaims}</div>
-                    <div>claims verified</div>
-                  </li>
-                  <li>
-                    <div>
+                <table className="verify-stats">
+                  <tr id="verify-stats-numbers">
+                    <th> {numClaims} </th>
+                    <th> {numVerifiedClaims} </th>
+                    <th>
+                      {' '}
                       {(
                         parseFloat(numVerifiedClaims) /
                         numClaims *
                         100
-                      ).toFixed(2)}%
-                    </div>
-                    <div>claims verified</div>
-                  </li>
-                </ul>
-                <ul className="claim-stats">
-                  <li>{numTypes[0]} proper noun(s)</li>
-                  <li>{numTypes[1]} number(s) and statistic(s)</li>
-                  <li>{numTypes[2]} quote(s)</li>
-                  <li>{numTypes[3]} date(s)</li>
-                  <li>{numTypes[4]} general claim(s)</li>
-                </ul>
+                      ).toFixed(2)}%{' '}
+                    </th>
+                  </tr>
+                  <tr id="verify-stats-labels">
+                    <td> claims highlighted </td>
+                    <td> claims verified </td>
+                    <td> claims verified </td>
+                  </tr>
+                </table>
+                <div className="claim-stats">
+                  <div>{numTypes[0]} proper noun(s)</div>
+                  <div>{numTypes[1]} number(s) and statistic(s)</div>
+                  <div>{numTypes[2]} quote(s)</div>
+                  <div>{numTypes[3]} date(s)</div>
+                  <div>{numTypes[4]} general claim(s)</div>
+                </div>
               </div>
             ) : (
               <div />
