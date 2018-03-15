@@ -26,6 +26,10 @@ h3 {
   background: #fff;
 }
 
+#stats .verify-stats li {
+  display: inline-block;
+}
+
 button {
   font-family: 'Open Sans', sans-serif;
   font-size: 11px;

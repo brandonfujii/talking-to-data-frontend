@@ -633,16 +633,27 @@ class TextEditor extends React.Component {
           <div id="stats">
             {numClaims > 0 ? (
               <div id="statistics">
-                <ul>
-                  <li>{numClaims} claims highlighted</li>
-                  <li>{numVerifiedClaims} claims verified</li>
+                <ul className="verify-stats">
                   <li>
-                    {(parseFloat(numVerifiedClaims) / numClaims * 100).toFixed(
-                      2
-                    )}% of claims verified
+                    <div>{numClaims}</div>
+                    <div>claims highlighted</div>
+                  </li>
+                  <li>
+                    <div>{numVerifiedClaims}</div>
+                    <div>claims verified</div>
+                  </li>
+                  <li>
+                    <div>
+                      {(
+                        parseFloat(numVerifiedClaims) /
+                        numClaims *
+                        100
+                      ).toFixed(2)}%
+                    </div>
+                    <div>claims verified</div>
                   </li>
                 </ul>
-                <ul>
+                <ul className="claim-stats">
                   <li>{numTypes[0]} proper noun(s)</li>
                   <li>{numTypes[1]} number(s) and statistic(s)</li>
                   <li>{numTypes[2]} quote(s)</li>
