@@ -10,24 +10,35 @@ class Upload extends Component {
   }
 
   handleSubmit(event) {
-    let file = this.fileInput.files[0].name;
+    event.preventDefault();
+    /*
+    let file = this.fileInput.files[0];
+    var reader = new fileReader();
+    reader.onload = function(event){
+
+    }
     this.setState({ data: file });
+    */
+    this.props.handleUpload(event);
   }
 
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <label>
-          Upload article:
-          <input
-            type="file"
-            ref={input => {
-              this.fileInput = input;
-            }}
-          />
-        </label>
-        <br />
-        <button type="submit">Upload</button>
+        <div className="form-group">
+          <label>
+            Upload article:
+            <input
+              type="file"
+              class="form-control-file"
+              ref={input => {
+                this.fileInput = input;
+              }}
+            />
+          </label>
+          <br />
+          <button type="submit">Upload</button>
+        </div>
       </form>
     );
   }

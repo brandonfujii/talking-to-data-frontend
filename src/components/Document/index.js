@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import TextEditor from '../TextEditor';
+import Login from '../Login';
+import Upload from '../Upload';
 
 class Document extends Component {
   constructor(props) {
     super(props);
+    this.handleSubmitLogin = this.handleSubmitLogin.bind(this);
+    this.handleSubmitUpload = this.handleSubmitUpload.bind(this);
     this.state = {
       article: `The White House is "actively considering issuing a veto threat" against the bipartisan immigration bill Thursday morning, a senior administration official said. And in a statement released late Wednesday night, the Department of Homeland Security had tough words for the plan, calling it "the end of immigration enforcement in America." The legislation from a group of 16 bipartisan senators would offer nearly 2 million young undocumented immigrants who came to the US as children before 2012 a path to citizenship over 10 to 12 years. The plan would also place $25 billion in a guarded trust for border security, would cut a small number of green cards each year for adult children of current green card holders, and would prevent parents from being sponsored for citizenship by their US citizen children if that child gained citizenship through the pathway created in the bill or if they brought the child to the US illegally. One provision the Department of Homeland Security particularly objected to would direct it to focus its arrests and deportations on criminals and newly arrived immigrants. The Trump administration has virtually removed all prioritization of arresting and deporting immigrants. It has targeted individuals with final deportation orders, some years and decades old, drawing criticism for deporting longtime members of communities with US citizen families. "The Schumer-Rounds-Collins proposal destroys the ability of the men and women from the Department of Homeland Security (DHS) to remove millions of illegal aliens," DHS said in a statement. "It would be the end of immigration enforcement in America and only serve to draw millions more illegal aliens with no way to remove them."`,
       claims: [
@@ -238,8 +242,16 @@ class Document extends Component {
           date_verified: null
         }
       ],
-      filter: -1
+      page: 'login'
     };
+  }
+
+  handleSubmitLogin(event) {
+    this.setState({ page: 'upload' });
+  }
+
+  handleSubmitUpload(event) {
+    this.setState({ page: 'editor' });
   }
 
   updateArticle(text, edit_start_index, offset = 1) {
@@ -321,8 +333,14 @@ class Document extends Component {
   }
 
   render() {
-    return (
-      <div>
+    var page = null;
+
+    if (this.state.page == 'login') {
+      page = <Login handleLogin={this.handleSubmitLogin} />;
+    } else if (this.state.page == 'upload') {
+      page = <Upload handleUpload={this.handleSubmitUpload} />;
+    } else {
+      page = (
         <TextEditor
           article={this.state.article}
           claims={this.state.claims}
@@ -332,8 +350,10 @@ class Document extends Component {
           removeClaim={this.removeClaim.bind(this)}
           removeSource={this.removeSource.bind(this)}
         />
-      </div>
-    );
+      );
+    }
+
+    return <div>{page}</div>;
   }
 }
 

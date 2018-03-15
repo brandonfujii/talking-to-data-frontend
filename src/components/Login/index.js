@@ -27,30 +27,42 @@ class Login extends Component {
     });
   }
   handleSubmit(event) {
-    return null;
+    event.preventDefault();
+    this.props.handleLogin(event);
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Username:
-          <input
-            type="text"
-            value={this.state.value}
-            onChange={this.handleChangeU}
-          />
+      <div>
+        <form onSubmit={this.handleSubmit} className="form-group">
+          <div className="form-group">
+            <label htmlFor="inputUsername">Username</label>
+            <input
+              type="text"
+              id="inputUsername"
+              className="form-control"
+              placeholder="Username"
+              value={this.state.value}
+              onChange={this.handleChangeU}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="inputPassword">Password</label>
+            <input
+              type="password"
+              id="inputPassword"
+              className="form-control"
+              placeholder="Password"
+              value={this.state.value}
+              onChange={this.handleChangeP}
+            />
+          </div>
           <br />
-          Password:
-          <input
-            type="password"
-            value={this.state.value}
-            onChange={this.handleChangeP}
-          />
-          <br />
-          <input type="submit" value="Login" />
-        </label>
-      </form>
+          <button type="submit" className="btn btn-primary mb-2">
+            Submit
+          </button>
+        </form>
+      </div>
     );
   }
 }
