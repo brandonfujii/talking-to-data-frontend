@@ -22,6 +22,7 @@ h3 {
 }
 
 #stats {
+  padding: 25px;
   background: #fff;
 }
 
@@ -182,7 +183,7 @@ div.control-margin {
   color: violet;
 }
 
-.source-list ul > li {
+li {
   list-style-type: none;
 }
 
