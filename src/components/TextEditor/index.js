@@ -10,7 +10,7 @@ import {
 import PropTypes from 'prop-types';
 import style from './style.css';
 
-const highlights = ['pronoun', 'number', 'quote', 'date', 'general'];
+const highlights = ['proper noun', 'number', 'quote', 'date', 'general'];
 
 const styleMap = {
   HIGHLIGHT0: {
@@ -317,6 +317,7 @@ class TextEditor extends React.Component {
       });
     } else {
       this.setState({
+        clickInRange: false,
         showHighlightOptions: true,
         addSourceRequested: false
       });
@@ -488,7 +489,7 @@ class TextEditor extends React.Component {
           return (
             <li className="source block-text" key={source.source_id}>
               <span className="block-title">
-                <i class="fa fa-phone" /> Phone Contact
+                <i className="fa fa-phone" /> Phone Contact
               </span>
               <i
                 className="fa fa-times remove"
@@ -517,22 +518,34 @@ class TextEditor extends React.Component {
       ? this.findClaimById(this.state.claimSelectionId)
       : null;
 
+    let numClaims = this.props.claims ? this.props.claims.length : 0;
+    let numTypes = [0, 0, 0, 0, 0];
+    let numVerifiedClaims = this.props.claims
+      ? this.props.claims.reduce((count, claim) => {
+          numTypes[claim.type_id] += 1;
+          return count + claim.sources.length;
+        }, 0)
+      : 0;
+
     return (
       <div className="content-div">
         <header className="top-header">
-          <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">
+          <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <a className="navbar-brand" href="#">
               Factchecking Flow
             </a>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto">
+            <div
+              className="collapse navbar-collapse"
+              id="navbarSupportedContent"
+            >
+              <ul className="navbar-nav mr-auto">
                 <li
-                  class={`nav-item ${
+                  className={`nav-item ${
                     this.state.nav_state === 'document' ? 'active' : ''
                   }`}
                 >
                   <a
-                    class="nav-link"
+                    className="nav-link"
                     href="#document"
                     onClick={e => {
                       e.preventDefault();
@@ -543,17 +556,17 @@ class TextEditor extends React.Component {
                   >
                     Document{' '}
                     {this.state.nav_state === 'document' ? (
-                      <span class="sr-only">(current)</span>
+                      <span className="sr-only">(current)</span>
                     ) : null}
                   </a>
                 </li>
                 <li
-                  class={`nav-item ${
+                  className={`nav-item ${
                     this.state.nav_state === 'stats' ? 'active' : ''
                   }`}
                 >
                   <a
-                    class="nav-link"
+                    className="nav-link"
                     href="#stats"
                     onClick={e => {
                       e.preventDefault();
@@ -564,7 +577,7 @@ class TextEditor extends React.Component {
                   >
                     Stats{' '}
                     {this.state.nav_state === 'stats' ? (
-                      <span class="sr-only">(current)</span>
+                      <span className="sr-only">(current)</span>
                     ) : null}
                   </a>
                 </li>
@@ -618,11 +631,34 @@ class TextEditor extends React.Component {
         </header>
         {this.state.nav_state === 'stats' ? (
           <div id="stats">
-            {this.props.claims.length > 0 ? (
+            {numClaims > 0 ? (
               <div id="statistics">
-                <ul>
-                  <li />
-                  <li />
+                <ul className="verify-stats">
+                  <li>
+                    <div>{numClaims}</div>
+                    <div>claims highlighted</div>
+                  </li>
+                  <li>
+                    <div>{numVerifiedClaims}</div>
+                    <div>claims verified</div>
+                  </li>
+                  <li>
+                    <div>
+                      {(
+                        parseFloat(numVerifiedClaims) /
+                        numClaims *
+                        100
+                      ).toFixed(2)}%
+                    </div>
+                    <div>claims verified</div>
+                  </li>
+                </ul>
+                <ul className="claim-stats">
+                  <li>{numTypes[0]} proper noun(s)</li>
+                  <li>{numTypes[1]} number(s) and statistic(s)</li>
+                  <li>{numTypes[2]} quote(s)</li>
+                  <li>{numTypes[3]} date(s)</li>
+                  <li>{numTypes[4]} general claim(s)</li>
                 </ul>
               </div>
             ) : (

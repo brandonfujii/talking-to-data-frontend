@@ -22,7 +22,12 @@ h3 {
 }
 
 #stats {
+  padding: 25px;
   background: #fff;
+}
+
+#stats .verify-stats li {
+  display: inline-block;
 }
 
 button {
@@ -182,7 +187,7 @@ div.control-margin {
   color: violet;
 }
 
-.source-list ul > li {
+li {
   list-style-type: none;
 }
 
