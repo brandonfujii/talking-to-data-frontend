@@ -44,7 +44,8 @@ class TextEditor extends React.Component {
         source_number: null,
         source_person: null
       },
-      sourceFormType: 'link'
+      sourceFormType: 'link',
+      nav_state: 'document'
     };
 
     let editorState = this.loadArticleIntoEditor(
@@ -129,8 +130,6 @@ class TextEditor extends React.Component {
       ids[claimKey] = claims[i].id;
     }
     rawJSONText = rawJSONText.concat(`]}]}`);
-    //console.log(ids);
-    //this.setState({ claimIds: ids }, () => console.log(this.state.claimIds));
     this.setState({ claimIds: ids });
     return rawJSONText;
   };
@@ -507,6 +506,57 @@ class TextEditor extends React.Component {
     return (
       <div className="content-div">
         <header className="top-header">
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">
+              Factchecking Flow
+            </a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li
+                  class={`nav-item ${
+                    this.state.nav_state === 'document' ? 'active' : ''
+                  }`}
+                >
+                  <a
+                    class="nav-link"
+                    href="#document"
+                    onClick={e => {
+                      e.preventDefault();
+                      this.setState({
+                        nav_state: 'document'
+                      });
+                    }}
+                  >
+                    Document{' '}
+                    {this.state.nav_state === 'document' ? (
+                      <span class="sr-only">(current)</span>
+                    ) : null}
+                  </a>
+                </li>
+                <li
+                  class={`nav-item ${
+                    this.state.nav_state === 'stats' ? 'active' : ''
+                  }`}
+                >
+                  <a
+                    class="nav-link"
+                    href="#stats"
+                    onClick={e => {
+                      e.preventDefault();
+                      this.setState({
+                        nav_state: 'stats'
+                      });
+                    }}
+                  >
+                    Stats{' '}
+                    {this.state.nav_state === 'stats' ? (
+                      <span class="sr-only">(current)</span>
+                    ) : null}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </nav>
           {this.state.showHighlightOptions ? (
             <div>
               <button
