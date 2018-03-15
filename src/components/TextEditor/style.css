@@ -15,6 +15,16 @@ h2,
 h3 {
   font-family: 'Lora', serif;
 }
+
+#document,
+#stats {
+  height: 100vh;
+}
+
+#stats {
+  background: #fff;
+}
+
 button {
   font-family: 'Open Sans', sans-serif;
   font-size: 11px;
@@ -22,7 +32,7 @@ button {
 
 .btn.btn-outline-primary.highlight-btn {
   font-size: 13px;
-  margin-top: 15px;
+  margin-top: 5px;
   margin-left: 10px;
 }
 

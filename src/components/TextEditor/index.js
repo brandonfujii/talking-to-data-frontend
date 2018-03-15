@@ -568,261 +568,299 @@ class TextEditor extends React.Component {
                     ) : null}
                   </a>
                 </li>
+                {this.state.showHighlightOptions ? (
+                  <li>
+                    <button
+                      type="button"
+                      className="highlight-btn btn btn-outline-primary"
+                      id="general"
+                      onClick={this._onHighlight4}
+                    >
+                      General
+                    </button>
+                    <button
+                      type="button"
+                      className="highlight-btn btn btn-outline-primary"
+                      id="proper-noun"
+                      onClick={this._onHighlight0}
+                    >
+                      Proper Noun
+                    </button>
+                    <button
+                      type="button"
+                      className="highlight-btn btn btn-outline-primary"
+                      id="number"
+                      onClick={this._onHighlight1}
+                    >
+                      Number
+                    </button>
+                    <button
+                      type="button"
+                      className="highlight-btn btn btn-outline-primary"
+                      id="quote"
+                      onClick={this._onHighlight2}
+                    >
+                      Quote
+                    </button>
+                    <button
+                      type="button"
+                      className="highlight-btn btn btn-outline-primary"
+                      id="date"
+                      onClick={this._onHighlight3}
+                    >
+                      Date
+                    </button>
+                  </li>
+                ) : null}
               </ul>
             </div>
           </nav>
-          {this.state.showHighlightOptions ? (
-            <div>
-              <button
-                type="button"
-                className="highlight-btn btn btn-outline-primary"
-                id="general"
-                onClick={this._onHighlight4}
-              >
-                General
-              </button>
-              <button
-                type="button"
-                className="highlight-btn btn btn-outline-primary"
-                id="proper-noun"
-                onClick={this._onHighlight0}
-              >
-                Proper Noun
-              </button>
-              <button
-                type="button"
-                className="highlight-btn btn btn-outline-primary"
-                id="number"
-                onClick={this._onHighlight1}
-              >
-                Number
-              </button>
-              <button
-                type="button"
-                className="highlight-btn btn btn-outline-primary"
-                id="quote"
-                onClick={this._onHighlight2}
-              >
-                Quote
-              </button>
-              <button
-                type="button"
-                className="highlight-btn btn btn-outline-primary"
-                id="date"
-                onClick={this._onHighlight3}
-              >
-                Date
-              </button>
-            </div>
-          ) : null}
         </header>
-        <div className="editor-margin column clearfix">
-          <div className="editor-div">
-            <Editor
-              customStyleMap={styleMap}
-              editorState={this.state.editorState}
-              handleKeyCommand={this.handleKeyCommand}
-              onChange={this.onChange}
-              keyBindingFn={this.keyBindingFn}
-            />
+        {this.state.nav_state === 'stats' ? (
+          <div id="stats">
+            {this.props.claims.length > 0 ? (
+              <div id="statistics">
+                <ul>
+                  <li />
+                  <li />
+                </ul>
+              </div>
+            ) : (
+              <div />
+            )}
           </div>
-        </div>
-        <div className="control-margin column clearfix">
-          <div className="controlPanel">
-            {this.state.clickInRange ? (
-              <div>
-                {selectedClaim ? (
+        ) : (
+          <div id="document">
+            <div className="editor-margin column clearfix">
+              <div className="editor-div">
+                <Editor
+                  customStyleMap={styleMap}
+                  editorState={this.state.editorState}
+                  handleKeyCommand={this.handleKeyCommand}
+                  onChange={this.onChange}
+                  keyBindingFn={this.keyBindingFn}
+                />
+              </div>
+            </div>
+            <div className="control-margin column clearfix">
+              <div className="controlPanel">
+                {this.state.clickInRange ? (
                   <div>
-                    <div className="block-text" id="selected-claim">
-                      <span
-                        className={`block-title claim-type ${
-                          highlights[selectedClaim.type_id]
-                        }`}
-                      >
-                        {highlights[selectedClaim.type_id]}
-                      </span>
-                      <i
-                        className="fa fa-times remove"
-                        onClick={e =>
-                          this.removeHighlightedClaim(
-                            this.state.claimSelectionId
-                          )
-                        }
-                      />
-                      <div>{this.state.claimSelectionText}</div>
-                    </div>
-                    <div className="source-list">
-                      <p className="source-list-title">
-                        {selectedClaim && selectedClaim.sources.length > 0
-                          ? selectedClaim.sources.length
-                          : ''}{' '}
-                        Verified Source(s)
-                      </p>
-                      {selectedClaim && selectedClaim.sources.length ? (
-                        <ul>{this.renderSources(selectedClaim)}</ul>
-                      ) : (
-                        <div className="null-sources">No sources added</div>
-                      )}
-                    </div>
+                    {selectedClaim ? (
+                      <div>
+                        <div className="block-text" id="selected-claim">
+                          <span
+                            className={`block-title claim-type ${
+                              highlights[selectedClaim.type_id]
+                            }`}
+                          >
+                            {highlights[selectedClaim.type_id]}
+                          </span>
+                          <i
+                            className="fa fa-times remove"
+                            onClick={e =>
+                              this.removeHighlightedClaim(
+                                this.state.claimSelectionId
+                              )
+                            }
+                          />
+                          <div>{this.state.claimSelectionText}</div>
+                        </div>
+                        <div className="source-list">
+                          <p className="source-list-title">
+                            {selectedClaim && selectedClaim.sources.length > 0
+                              ? selectedClaim.sources.length
+                              : ''}{' '}
+                            Verified Source(s)
+                          </p>
+                          {selectedClaim && selectedClaim.sources.length ? (
+                            <ul>{this.renderSources(selectedClaim)}</ul>
+                          ) : (
+                            <div className="null-sources">No sources added</div>
+                          )}
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
                 ) : null}
-              </div>
-            ) : null}
-            {this.state.clickInRange ? (
-              <div>
-                {!this.state.addSourceRequested ? (
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    id="sourceButton"
-                    onClick={() => this.requestAddSource()}
-                  >
-                    Add Source
-                  </button>
-                ) : null}
-                {this.state.addSourceRequested ? (
+                {this.state.clickInRange ? (
                   <div>
-                    <form
-                      onSubmit={e => {
-                        e.preventDefault();
-                        if (this.state.sourceFormType == 'link') {
-                          this.handleAddSource('link');
-                        } else {
-                          this.handleAddSource('phonecall');
-                        }
-                      }}
-                    >
-                      {this.state.sourceFormType == 'link' ? (
-                        <div className="form-group">
-                          <label htmlFor="source_link">Source URL</label>
-                          <input
-                            id="source_link"
-                            className="form-control"
-                            onChange={e =>
-                              this.updateFormInput(e.target.id, e.target.value)
+                    {!this.state.addSourceRequested ? (
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        id="sourceButton"
+                        onClick={() => this.requestAddSource()}
+                      >
+                        Add Source
+                      </button>
+                    ) : null}
+                    {this.state.addSourceRequested ? (
+                      <div>
+                        <form
+                          onSubmit={e => {
+                            e.preventDefault();
+                            if (this.state.sourceFormType == 'link') {
+                              this.handleAddSource('link');
+                            } else {
+                              this.handleAddSource('phonecall');
                             }
-                            value={this.state.source_form.source_link || ''}
-                            placeholder=""
-                          />
-                          <small
-                            id="source-link-help"
-                            className="form-text text-muted"
-                          >
-                            The link to the source that verifies this claim.
-                          </small>
-                        </div>
-                      ) : (
-                        <div className="form-group">
-                          <label htmlFor="source_number">
-                            Source Contact Number
-                          </label>
-                          <input
-                            id="source_number"
-                            className="form-control"
-                            onChange={e =>
-                              this.updateFormInput(e.target.id, e.target.value)
-                            }
-                            value={this.state.source_form.source_number || ''}
-                            placeholder="(555) 555-5555"
-                          />
-                        </div>
-                      )}
-                      {this.state.sourceFormType == 'phonecall' ? (
-                        <div className="form-group">
-                          <label htmlFor="source_person">
-                            Source Contact Name
-                          </label>
-                          <input
-                            id="source_person"
-                            className="form-control"
-                            onChange={e =>
-                              this.updateFormInput(e.target.id, e.target.value)
-                            }
-                            value={this.state.source_form.source_person || ''}
-                            placeholder="E.g Barack Obama, U.S EPA"
-                          />
-                        </div>
-                      ) : (
-                        <div className="form-group">
-                          <label htmlFor="source_title">Source Title</label>
-                          <input
-                            id="source_title"
-                            onChange={e =>
-                              this.updateFormInput(e.target.id, e.target.value)
-                            }
-                            className="form-control"
-                            value={this.state.source_form.source_title || ''}
-                            placeholder=""
-                          />
-                        </div>
-                      )}
-                      <div className="form-group">
-                        <label htmlFor="source_description">
-                          Source Description
-                        </label>
-                        <textarea
-                          className="form-control"
-                          id="source_description"
-                          onChange={e =>
-                            this.updateFormInput(e.target.id, e.target.value)
-                          }
-                          value={
-                            this.state.source_form.source_description || ''
-                          }
-                          rows="3"
-                        />
-                        <small
-                          id="source-desc-help"
-                          className="form-text text-muted"
-                        >
-                          1-2 sentences on what this source is and how it
-                          verifies this claim.
-                        </small>
-                      </div>
-                      <p id="add-phone-call" className="form-text">
-                        <a
-                          href="#"
-                          onClick={e =>
-                            this.setState({
-                              sourceFormType:
-                                this.state.sourceFormType == 'link'
-                                  ? 'phonecall'
-                                  : 'link'
-                            })
-                          }
+                          }}
                         >
                           {this.state.sourceFormType == 'link' ? (
-                            <span>+ Add a phone call source</span>
+                            <div className="form-group">
+                              <label htmlFor="source_link">Source URL</label>
+                              <input
+                                id="source_link"
+                                className="form-control"
+                                onChange={e =>
+                                  this.updateFormInput(
+                                    e.target.id,
+                                    e.target.value
+                                  )
+                                }
+                                value={this.state.source_form.source_link || ''}
+                                placeholder=""
+                              />
+                              <small
+                                id="source-link-help"
+                                className="form-text text-muted"
+                              >
+                                The link to the source that verifies this claim.
+                              </small>
+                            </div>
                           ) : (
-                            <span>+ Add a link source</span>
+                            <div className="form-group">
+                              <label htmlFor="source_number">
+                                Source Contact Number
+                              </label>
+                              <input
+                                id="source_number"
+                                className="form-control"
+                                onChange={e =>
+                                  this.updateFormInput(
+                                    e.target.id,
+                                    e.target.value
+                                  )
+                                }
+                                value={
+                                  this.state.source_form.source_number || ''
+                                }
+                                placeholder="(555) 555-5555"
+                              />
+                            </div>
                           )}
-                        </a>
-                      </p>
-                      <button
-                        type="submit"
-                        className="btn btn-primary"
-                        id="submitInfoButton"
-                      >
-                        Verify Claim
-                      </button>
-                      <button
-                        type="text"
-                        className="btn btn-danger"
-                        id="cancelSource"
-                        onClick={e => {
-                          e.preventDefault();
-                          this.nullifySourceForm();
-                        }}
-                      >
-                        Cancel
-                      </button>
-                    </form>
+                          {this.state.sourceFormType == 'phonecall' ? (
+                            <div className="form-group">
+                              <label htmlFor="source_person">
+                                Source Contact Name
+                              </label>
+                              <input
+                                id="source_person"
+                                className="form-control"
+                                onChange={e =>
+                                  this.updateFormInput(
+                                    e.target.id,
+                                    e.target.value
+                                  )
+                                }
+                                value={
+                                  this.state.source_form.source_person || ''
+                                }
+                                placeholder="E.g Barack Obama, U.S EPA"
+                              />
+                            </div>
+                          ) : (
+                            <div className="form-group">
+                              <label htmlFor="source_title">Source Title</label>
+                              <input
+                                id="source_title"
+                                onChange={e =>
+                                  this.updateFormInput(
+                                    e.target.id,
+                                    e.target.value
+                                  )
+                                }
+                                className="form-control"
+                                value={
+                                  this.state.source_form.source_title || ''
+                                }
+                                placeholder=""
+                              />
+                            </div>
+                          )}
+                          <div className="form-group">
+                            <label htmlFor="source_description">
+                              Source Description
+                            </label>
+                            <textarea
+                              className="form-control"
+                              id="source_description"
+                              onChange={e =>
+                                this.updateFormInput(
+                                  e.target.id,
+                                  e.target.value
+                                )
+                              }
+                              value={
+                                this.state.source_form.source_description || ''
+                              }
+                              rows="3"
+                            />
+                            <small
+                              id="source-desc-help"
+                              className="form-text text-muted"
+                            >
+                              1-2 sentences on what this source is and how it
+                              verifies this claim.
+                            </small>
+                          </div>
+                          <p id="add-phone-call" className="form-text">
+                            <a
+                              href="#"
+                              onClick={e =>
+                                this.setState({
+                                  sourceFormType:
+                                    this.state.sourceFormType == 'link'
+                                      ? 'phonecall'
+                                      : 'link'
+                                })
+                              }
+                            >
+                              {this.state.sourceFormType == 'link' ? (
+                                <span>+ Add a phone call source</span>
+                              ) : (
+                                <span>+ Add a link source</span>
+                              )}
+                            </a>
+                          </p>
+                          <button
+                            type="submit"
+                            className="btn btn-primary"
+                            id="submitInfoButton"
+                          >
+                            Verify Claim
+                          </button>
+                          <button
+                            type="text"
+                            className="btn btn-danger"
+                            id="cancelSource"
+                            onClick={e => {
+                              e.preventDefault();
+                              this.nullifySourceForm();
+                            }}
+                          >
+                            Cancel
+                          </button>
+                        </form>
+                      </div>
+                    ) : null}
                   </div>
                 ) : null}
               </div>
-            ) : null}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }
