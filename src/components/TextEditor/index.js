@@ -10,7 +10,7 @@ import {
 import PropTypes from 'prop-types';
 import style from './style.css';
 
-const highlights = ['pronoun', 'number', 'quote', 'date', 'general'];
+const highlights = ['proper noun', 'number', 'quote', 'date', 'general'];
 
 const styleMap = {
   HIGHLIGHT0: {
