@@ -26,43 +26,53 @@ button {
   margin-left: 10px;
 }
 
+.highlight-btn#general {
+  border-color: gray;
+  color: gray;
+}
+
+.highlight-btn#general:hover {
+  background-color: gray;
+  color: #fff;
+}
+
 .highlight-btn#proper-noun {
-  border-color: lightsalmon;
-  color: lightsalmon;
+  border-color: salmon;
+  color: salmon;
 }
 
 .highlight-btn#proper-noun:hover {
-  background-color: lightsalmon;
+  background-color: salmon;
   color: #fff;
 }
 
 .highlight-btn#number {
-  border-color: lightblue;
-  color: lightblue;
+  border-color: blue;
+  color: blue;
 }
 
 .highlight-btn#number:hover {
-  background-color: lightblue;
+  background-color: blue;
   color: #fff;
 }
 
 .highlight-btn#quote {
-  border-color: lightgreen;
-  color: lightgreen;
+  border-color: green;
+  color: green;
 }
 
 .highlight-btn#quote:hover {
-  background-color: lightgreen;
+  background-color: green;
   color: #fff;
 }
 
 .highlight-btn#date {
-  border-color: violet;
-  color: violet;
+  border-color: purple;
+  color: purple;
 }
 
 .highlight-btn#date:hover {
-  background-color: violet;
+  background-color: purple;
   color: #fff;
 }
 
