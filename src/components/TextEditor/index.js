@@ -10,7 +10,7 @@ import {
 import PropTypes from 'prop-types';
 import style from './style.css';
 
-const highlights = ['pronoun', 'number', 'quote', 'date', 'general'];
+const highlights = ['proper noun', 'number', 'quote', 'date', 'general'];
 
 const styleMap = {
   HIGHLIGHT0: {
@@ -317,6 +317,7 @@ class TextEditor extends React.Component {
       });
     } else {
       this.setState({
+        clickInRange: false,
         showHighlightOptions: true,
         addSourceRequested: false
       });
